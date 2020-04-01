@@ -22,6 +22,7 @@ async def on_message(message):
     if message.author == client.user:
         return
     user=""
+    
     if '@' in message.content:
         user=substring.substringByChar(message.content, startChar="<", endChar=">")
     if 'gWhy' in message.content:
@@ -61,7 +62,13 @@ async def on_message(message):
         data = r.json() 
         await message.channel.send(data["meme"])
         return
-  
+    if '!joke' in message.content.lower():
+        headers = {'Accept': 'application/json'}
+        joke="https://icanhazdadjoke.com/"
+        r = requests.get(url = joke, headers=headers)
+        data = r.json() 
+        await message.channel.send(data["joke"])
+        return
 @client.event
 async def on_member_join(member):
     await member.create_dm()
