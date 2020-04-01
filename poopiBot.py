@@ -72,12 +72,14 @@ async def on_message(message):
     if 'success' in message.content.lower():
         if '@' in message.content:
             await message.channel.send('Perfect'+" "+ user )
-        await message.channel.send('Perfect'+" <@"+ str(message.author.id)+">")
+        else:
+            await message.channel.send('Perfect'+" <@"+ str(message.author.id)+">")
         return
     if 'perfect' in message.content.lower():
         if '@' in message.content:
             await message.channel.send('Perfect'+" "+ user )
-        await message.channel.send('Beautiful'+" <@"+ str(message.author.id)+">")
+        else:
+            await message.channel.send('Beautiful'+" <@"+ str(message.author.id)+">")
         return
 @client.event
 async def on_member_join(member):
