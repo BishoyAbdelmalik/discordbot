@@ -3,6 +3,7 @@ import discord
 import threading
 import asyncio
 import substring
+import random
 
 TOKEN = open("token.txt").read()
 
@@ -35,10 +36,12 @@ async def on_message(message):
         await message.channel.send('gWhy'+" "+ user )
         return
     if 'why not' in message.content.lower():
-        await message.channel.send('Gwacause not'+" <@"+ str(message.author.id)+">")
+        if bool(random.getrandbits(1)):
+            await message.channel.send('Gwacause not'+" <@"+ str(message.author.id)+">")
         return
     if 'why' in message.content.lower():
-        await message.channel.send('Gwacause'+" <@"+ str(message.author.id)+">")
+        if bool(random.getrandbits(1)):
+            await message.channel.send('Gwacause'+" <@"+ str(message.author.id)+">")
         return
   
 @client.event
