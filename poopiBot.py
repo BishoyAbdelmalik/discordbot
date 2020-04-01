@@ -69,6 +69,12 @@ async def on_message(message):
         data = r.json() 
         await message.channel.send(data["joke"])
         return
+    if 'success' in message.content.lower():
+        await message.channel.send('Perfect'+" <@"+ str(message.author.id)+">")
+        return
+    if 'perfect' in message.content.lower():
+        await message.channel.send('Beautiful'+" <@"+ str(message.author.id)+">")
+        return
 @client.event
 async def on_member_join(member):
     await member.create_dm()
