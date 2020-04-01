@@ -9,6 +9,8 @@ import requests
 TOKEN = open("token.txt").read()
 # api-endpoint 
 meme = "https://meme-api.glitch.me/dank"
+meme2 = "https://meme-api.glitch.me/sbubby"
+meme3 = "https://meme-api.glitch.me/moderate"
 client = discord.Client()
 # gwhy=True
 
@@ -46,7 +48,15 @@ async def on_message(message):
             await message.channel.send('Gwacause'+" <@"+ str(message.author.id)+">")
         return
     if '!meme' in message.content.lower():
-        r = requests.get(url = meme)
+        pick=random.randint(1,4)
+        link=meme
+        if pick==1:
+            link=meme
+        if pick==2:
+            link=meme2
+        if pick==3:
+            link=meme3
+        r = requests.get(url = link)
         # extracting data in json format 
         data = r.json() 
         await message.channel.send(data["meme"])
