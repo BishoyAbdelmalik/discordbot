@@ -70,9 +70,13 @@ async def on_message(message):
         await message.channel.send(data["joke"])
         return
     if 'success' in message.content.lower():
+        if '@' in message.content:
+            await message.channel.send('Perfect'+" "+ user )
         await message.channel.send('Perfect'+" <@"+ str(message.author.id)+">")
         return
     if 'perfect' in message.content.lower():
+        if '@' in message.content:
+            await message.channel.send('Perfect'+" "+ user )
         await message.channel.send('Beautiful'+" <@"+ str(message.author.id)+">")
         return
 @client.event
