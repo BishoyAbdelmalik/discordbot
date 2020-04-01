@@ -77,7 +77,7 @@ async def on_message(message):
         return
     if 'perfect' in message.content.lower():
         if '@' in message.content:
-            await message.channel.send('Perfect'+" "+ user )
+            await message.channel.send('Beautiful'+" "+ user )
         else:
             await message.channel.send('Beautiful'+" <@"+ str(message.author.id)+">")
         return
