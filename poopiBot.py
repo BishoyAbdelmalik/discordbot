@@ -2,6 +2,7 @@
 import discord
 import threading
 import asyncio
+import substring
 
 TOKEN = open("token.txt").read()
 
@@ -15,8 +16,11 @@ async def on_ready():
 async def on_message(message):
     if message.author == client.user:
         return
+    user=""
+    if '@' in message.content:
+        user=substring.substringByChar(message.content, startChar="<", endChar=">")
     if 'gWhy' in message.content:
-        gwhy=True
+        # gwhy=True
         await message.channel.send('CANBAS')
         # while True:
             # await message.channel.send('CANBAS')
@@ -28,10 +32,10 @@ async def on_message(message):
     if 'CANBAS'.lower() in message.content.lower():
         #print("stop canbas")
         # gwhy=False
-        await message.channel.send('gWhy')
+        await message.channel.send('gWhy'+" "+ user )
         return
     if 'why' in message.content.lower():
-        await message.channel.send('Gwacause')
+        await message.channel.send('Gwacause'+" "+ user)
         return
 @client.event
 async def on_member_join(member):
