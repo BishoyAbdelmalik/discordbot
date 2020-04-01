@@ -4,9 +4,11 @@ import threading
 import asyncio
 import substring
 import random
+import requests 
 
 TOKEN = open("token.txt").read()
-
+# api-endpoint 
+meme = "https://meme-api.glitch.me/dank"
 client = discord.Client()
 # gwhy=True
 
@@ -42,6 +44,12 @@ async def on_message(message):
     if 'why' in message.content.lower():
         if bool(random.getrandbits(1)):
             await message.channel.send('Gwacause'+" <@"+ str(message.author.id)+">")
+        return
+    if '!meme' in message.content.lower():
+        r = requests.get(url = meme)
+        # extracting data in json format 
+        data = r.json() 
+        await message.channel.send(data["meme"])
         return
   
 @client.event
