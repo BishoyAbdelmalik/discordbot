@@ -82,7 +82,7 @@ async def on_message(message):
             await message.channel.send('Beautiful'+" <@"+ str(message.author.id)+">")
         return
     pick=random.randint(1,20)
-    if pick==5 or pick==3:
+    if pick==5:
         await message.channel.send('mmmm'+" <@"+ str(message.author.id)+">")
         return
 
