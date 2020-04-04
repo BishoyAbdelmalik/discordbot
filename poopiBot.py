@@ -81,6 +81,12 @@ async def on_message(message):
         else:
             await message.channel.send('Beautiful'+" <@"+ str(message.author.id)+">")
         return
+    pick=random.randint(1,10)
+    if pick==5 or pick==3:
+        await message.channel.send('mmmm'+" <@"+ str(message.author.id)+">")
+        return
+
+
 @client.event
 async def on_member_join(member):
     await member.create_dm()
