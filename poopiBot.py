@@ -26,7 +26,6 @@ async def on_message(message):
     if '!start 380' in message.content:
         output = os.system('sh /380/start.sh')
         await message.channel.send(output)
-
         return
     if '@' in message.content:
         user=substring.substringByChar(message.content, startChar="<", endChar=">")
