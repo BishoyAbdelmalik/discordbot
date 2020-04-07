@@ -5,6 +5,7 @@ import asyncio
 import substring
 import random
 import requests 
+import os
 
 TOKEN = open("token.txt").read()
 # api-endpoint 
@@ -22,7 +23,11 @@ async def on_message(message):
     if message.author == client.user:
         return
     user=""
-    
+    if '!start 380' in message.content:
+        output = os.system('sh /380/start.sh')
+        await message.channel.send(output)
+
+        return
     if '@' in message.content:
         user=substring.substringByChar(message.content, startChar="<", endChar=">")
     if 'gWhy' in message.content:
@@ -81,7 +86,7 @@ async def on_message(message):
         else:
             await message.channel.send('Beautiful'+" <@"+ str(message.author.id)+">")
         return
-    pick=random.randint(1,20)
+    pick=random.randint(1,100)
     if pick==5:
         await message.channel.send('mmmm'+" <@"+ str(message.author.id)+">")
         return
