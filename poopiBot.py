@@ -6,6 +6,7 @@ import substring
 import random
 import requests 
 import os
+import subprocess
 
 TOKEN = open("token.txt").read()
 # api-endpoint 
@@ -24,8 +25,17 @@ async def on_message(message):
         return
     user=""
     if '!start 380' in message.content:
-        output = os.system('sh /380/start.sh')
-        await message.channel.send(output)
+        subprocess.Popen(["sh", "/380/start.sh"], shell=False,stdin=None, stdout=None, stderr=None, close_fds=True)
+        return
+    if '!stop 380' in message.content:
+        subprocess.Popen(["pkill", "-9" , "-f" , "server.py"], shell=False,stdin=None, stdout=None, stderr=None, close_fds=True)
+
+        return
+    if '!drive arian crazy' in message.content:
+        i=0
+        while i < 50:
+            await message.channel.send(';;(make-parent-directory* "/home/someone/test'+str(i)+'")' )
+            i += 1 
         return
     if '@' in message.content:
         user=substring.substringByChar(message.content, startChar="<", endChar=">")
