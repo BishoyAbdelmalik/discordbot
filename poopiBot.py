@@ -32,10 +32,7 @@ async def on_message(message):
 
         return
     if '!drive arian crazy' in message.content:
-        i=0
-        while i < 50:
-            await message.channel.send(';;(make-parent-directory* "/home/someone/test'+str(i)+'")' )
-            i += 1 
+        await message.channel.send('One day I will be able to' )             
         return
     if '@' in message.content:
         user=substring.substringByChar(message.content, startChar="<", endChar=">")
