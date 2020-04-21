@@ -129,8 +129,6 @@ class Music(commands.Cog):
                 raise commands.CommandError("Author not connected to a voice channel.")
         elif ctx.voice_client.is_playing():
             ctx.voice_client.stop()
-bot = commands.Bot(command_prefix=commands.when_mentioned_or("!"),
-                   description='Relatively simple music bot example')
 
 
 TOKEN = open("token.txt").read()
@@ -229,5 +227,9 @@ async def on_member_join(member):
     await member.dm_channel.send(
         f'Hi {member.name}, poopi welcoms you!'
     )
-client.add_cog(Music(bot))
-client.run(TOKEN)
+bot = commands.Bot(command_prefix=commands.when_mentioned_or("!"),
+                   description='Relatively simple music bot example')
+
+bot.add_cog(Music(bot))
+bot.run(TOKEN)
+# client.run(TOKEN)
