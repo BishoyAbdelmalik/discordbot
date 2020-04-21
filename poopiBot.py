@@ -15,7 +15,7 @@ meme2 = "https://meme-api.glitch.me/sbubby"
 meme3 = "https://meme-api.glitch.me/moderate"
 client = discord.Client()
 # gwhy=True
-
+music=False
 @client.event
 async def on_ready():
     print(f'{client.user} has connected to Discord!')
@@ -96,6 +96,15 @@ async def on_message(message):
     if pick==5:
         await message.channel.send('mmmm'+" <@"+ str(message.author.id)+">")
         return
+    if '!play' in message.content.lower():
+        await message.channel.send(';;play'+" " +message.content[7:] )
+        music=True
+        return
+    if message.author.id == 184405311681986560 and music:
+        music=False
+        await message.channel.send(';;play'+" 1")
+        return
+
 
 
 @client.event
