@@ -15,6 +15,10 @@ meme2 = "https://meme-api.glitch.me/sbubby"
 meme3 = "https://meme-api.glitch.me/moderate"
 # client = discord.Client()
 class MyClient(discord.Client):
+    async def addThumbUpReact(message):
+        emoji = '\N{THUMBS UP SIGN}'
+        await message.add_reaction(emoji)
+        return
     async def on_ready(self):
         print(f'{self.user} has connected to Discord!')
     async def on_message(self,message):
@@ -88,10 +92,10 @@ class MyClient(discord.Client):
             #print(message)
             pinChannel=client.get_channel(702270613766537328)
             await pinChannel.send(message.content.replace('!pin', '').strip()+"\n\nPinned by"+" <@"+ str(message.author.id)+">")
-            # await message.add_reactions('👍')
             await message.channel.send('Pinned ```'+message.content.replace('!pin', '').strip()+'```')
             await message.delete()
             return
+    
     
 
 client = MyClient()
