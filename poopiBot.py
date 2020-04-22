@@ -15,7 +15,7 @@ meme2 = "https://meme-api.glitch.me/sbubby"
 meme3 = "https://meme-api.glitch.me/moderate"
 # client = discord.Client()
 class MyClient(discord.Client):
-    async def addThumbUpReact(message):
+    async def addThumbUpReact(self,message):
         emoji = '\N{THUMBS UP SIGN}'
         await message.add_reaction(emoji)
         return
