@@ -84,6 +84,12 @@ class MyClient(discord.Client):
         if pick==5:
             await message.channel.send('mmmm'+" <@"+ str(message.author.id)+">")
             return
+        if '!pin' in message.content.lower():
+
+            pinChannel=client.get_channel(702270613766537328)
+            await pinChannel.send(message.content.replace('!pin', ''))
+            await message.channel.send('Pinned ```'+message.content+'```')
+            return
     
 
 client = MyClient()
