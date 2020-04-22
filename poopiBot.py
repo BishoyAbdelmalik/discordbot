@@ -88,7 +88,7 @@ class MyClient(discord.Client):
 
             pinChannel=client.get_channel(702270613766537328)
             await pinChannel.send(message.content.replace('!pin', ''))
-            await message.channel.send('Pinned ```'+message.content+'```')
+            await message.channel.send('Pinned ```'+message.content.replace('!pin', '')+'```')
             return
     
 
