@@ -87,9 +87,10 @@ class MyClient(discord.Client):
         if '!pin' in message.content.lower():
             #print(message)
             pinChannel=client.get_channel(702270613766537328)
-            await pinChannel.send(message.content.replace('!pin', '').strip()+" Pinned by"+" <@"+ str(message.author.id)+">")
+            await pinChannel.send(message.content.replace('!pin', '').strip()+"\n\n Pinned by"+" <@"+ str(message.author.id)+">")
             # await message.add_reactions('👍')
             await message.channel.send('Pinned ```'+message.content.replace('!pin', '').strip()+'```')
+            await client.delete_message(message)
             return
     
 
