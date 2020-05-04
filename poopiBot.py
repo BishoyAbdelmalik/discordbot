@@ -26,7 +26,7 @@ class MyClient(discord.Client):
             return
         user=""
         if '!start 380' in message.content:
-            subprocess.Popen(["sh", "/380/start.sh"], shell=False,stdin=None, stdout=None, stderr=None, close_fds=True)
+            subprocess.Popen(["sh", "/380/server/start.sh"], shell=False,stdin=None, stdout=None, stderr=None, close_fds=True)
             return
         if '!stop 380' in message.content:
             subprocess.Popen(["pkill", "-9" , "-f" , "server.py"], shell=False,stdin=None, stdout=None, stderr=None, close_fds=True)
