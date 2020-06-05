@@ -25,6 +25,7 @@ class MyClient(discord.Client):
         if message.author == self.user:
             return
         user=""
+      
         if '!start 380' in message.content:
             subprocess.Popen(["sh", "/380/server/start.sh"], shell=False,stdin=None, stdout=None, stderr=None, close_fds=True)
             return
@@ -95,15 +96,14 @@ class MyClient(discord.Client):
             await message.channel.send('Pinned ```'+message.content.replace('!pin', '').strip()+'```')
             await message.delete()
             return
-    
+    async def on_member_join(self,member):
+        await member.create_dm()
+        await member.dm_channel.send(
+            f'Hi {member.name}, poopi welcomes you!'
+        )
     
 
 client = MyClient()
-@client.event
-async def on_member_join(member):
-    await member.create_dm()
-    await member.dm_channel.send(
-        f'Hi {member.name}, poopi welcoms you!'
-    )
+
 
 client.run(TOKEN)
