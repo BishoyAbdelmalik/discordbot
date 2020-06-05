@@ -7,6 +7,7 @@ import random
 import requests 
 import os
 import subprocess
+from discord.ext import commands
 
 TOKEN = open("token.txt").read()
 # api-endpoint 
@@ -21,11 +22,15 @@ class MyClient(discord.Client):
         return
     async def on_ready(self):
         print(f'{self.user} has connected to Discord!')
+        print('Servers connected to:')
+        for channel in client.guilds:
+            print(channel)
+
     async def on_message(self,message):
         if message.author == self.user:
             return
         user=""
-      
+        print(message.content)
         if '!start 380' in message.content:
             subprocess.Popen(["sh", "/380/server/start.sh"], shell=False,stdin=None, stdout=None, stderr=None, close_fds=True)
             return
@@ -96,6 +101,8 @@ class MyClient(discord.Client):
             await message.channel.send('Pinned ```'+message.content.replace('!pin', '').strip()+'```')
             await message.delete()
             return
+        if '!ping' in message.content.lower():
+            await message.channel.send(client.latency)
     async def on_member_join(self,member):
         await member.create_dm()
         await member.dm_channel.send(
@@ -104,6 +111,11 @@ class MyClient(discord.Client):
     
 
 client = MyClient()
+# client = commands.Bot(command_prefix='!')
+
+# @client.command()
+# async def ping(ctx):
+#     await ctx.send('Pong! {0}'.format(round(client.latency, 1)))
 
 
 client.run(TOKEN)
