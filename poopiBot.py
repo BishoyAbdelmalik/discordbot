@@ -14,7 +14,7 @@ TOKEN = open("token.txt").read()
 meme = "http://localhost:956/dank"
 meme2 = "http://localhost:956/sbubby"
 meme3 = "http://localhost:956/moderate"
-print(os.system("node /bot/memeAPI &"))
+print(os.system("node /bot/memeAPI/server.js &"))
 # client = discord.Client()
 class MyClient(discord.Client):
     async def addThumbUpReact(self,message):
