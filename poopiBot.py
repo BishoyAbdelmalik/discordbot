@@ -11,9 +11,10 @@ from discord.ext import commands
 
 TOKEN = open("token.txt").read()
 # api-endpoint 
-meme = "https://meme-api.glitch.me/dank"
-meme2 = "https://meme-api.glitch.me/sbubby"
-meme3 = "https://meme-api.glitch.me/moderate"
+meme = "http://localhost:956/dank"
+meme2 = "http://localhost:956/sbubby"
+meme3 = "http://localhost:956/moderate"
+print(os.system("node /bot/memeAPI &"))
 # client = discord.Client()
 class MyClient(discord.Client):
     async def addThumbUpReact(self,message):
