@@ -17,6 +17,9 @@ TOKEN = open("token.txt").read()
 meme = "http://localhost:956/dank"
 meme2 = "http://localhost:956/sbubby"
 meme3 = "http://localhost:956/moderate"
+meme4 = "http://localhost:956/light"
+meme5 = "http://localhost:956/hmm"
+meme6 = "http://localhost:956/meme"
 print(os.system("node /bot/memeAPI/server.js &"))
 # client = discord.Client()
 class MyClient(discord.Client):
@@ -59,7 +62,7 @@ class MyClient(discord.Client):
                 await message.channel.send('Gwacause'+" <@"+ str(message.author.id)+">")
             return
         if '!meme' in message.content.lower():
-            pick=random.randint(1,4)
+            pick=random.randint(1,5)
             link=meme
             if pick==1:
                 link=meme
@@ -67,6 +70,8 @@ class MyClient(discord.Client):
                 link=meme2
             if pick==3:
                 link=meme3
+            if pick==4:
+                link=meme4
             r = requests.get(url = link)
             # extracting data in json format 
             data = r.json() 
