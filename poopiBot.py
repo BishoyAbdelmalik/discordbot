@@ -70,17 +70,19 @@ class MyClient(discord.Client):
             r = requests.get(url = link)
             # extracting data in json format 
             data = r.json() 
-            resp = yield from session.get(data["meme"])
-
-            try:
-                content = yield from resp.read()
-            finally:
-                resp.close()
-            buffer = BytesIO(content)
-
-            yield from client.send_file(message.channel, fp=buffer, filename="something.png")
-            # await message.channel.send(file=discord.File(data["meme"]))
-            # await message.channel.send(data["meme"])
+            response = requests.get(data["meme"], stream=True)
+            filename=data["meme"][data["meme"].index("m/")+2:]
+            #print(filename[filename.index("."):])
+            print(response.headers)
+            if  int(response.headers["Content-Length"])<8000000:
+                extenstion=filename[filename.index("."):]
+                filename="meme"+extenstion
+                with open(filename, 'wb') as f:
+                    f.write(response.content)
+                await message.channel.send(file=discord.File(filename))
+                os.remove(filename)
+            else:
+                await message.channel.send(data["meme"])
             return
         if '!joke' in message.content.lower():
             headers = {'Accept': 'application/json'}
