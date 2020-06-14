@@ -100,6 +100,26 @@ class MyClient(discord.Client):
             data = r.json() 
             await message.channel.send(data["joke"])
             return
+        if '!potato' in message.content.lower():
+            pick=random.randint(1,7)
+            link="http://localhost:956/potato"
+            r = requests.get(url = link)
+            # extracting data in json format 
+            data = r.json() 
+            response = requests.get(data["meme"], stream=True)
+            filename=data["meme"][data["meme"].index("m/")+2:]
+            #print(filename[filename.index("."):])
+            print(response.headers)
+            if  int(response.headers["Content-Length"])<8000000:
+                extenstion=filename[filename.index("."):]
+                filename="potato"+extenstion
+                with open(filename, 'wb') as f:
+                    f.write(response.content)
+                await message.channel.send(file=discord.File(filename))
+                os.remove(filename)
+            else:
+                await message.channel.send(data["meme"])
+            return
         if 'success' in message.content.lower():
             if '@' in message.content:
                 await message.channel.send('Perfect'+" "+ user )
