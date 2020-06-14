@@ -39,9 +39,6 @@ class MyClient(discord.Client):
             subprocess.Popen(["pkill", "-9" , "-f" , "server.py"], shell=False,stdin=None, stdout=None, stderr=None, close_fds=True)
 
             return
-        if '!drive arian crazy' in message.content:
-            await message.channel.send('One day I will be able to' )             
-            return
         if '@' in message.content:
             user=substring.substringByChar(message.content, startChar="<", endChar=">")
         if 'gWhy' in message.content:
@@ -70,7 +67,8 @@ class MyClient(discord.Client):
             r = requests.get(url = link)
             # extracting data in json format 
             data = r.json() 
-            await message.channel.send(data["meme"])
+            await message.channel.send(file=discord.File(data["meme"]))
+            # await message.channel.send(data["meme"])
             return
         if '!joke' in message.content.lower():
             headers = {'Accept': 'application/json'}
@@ -112,11 +110,7 @@ class MyClient(discord.Client):
     
 
 client = MyClient()
-# client = commands.Bot(command_prefix='!')
 
-# @client.command()
-# async def ping(ctx):
-#     await ctx.send('Pong! {0}'.format(round(client.latency, 1)))
 
 
 client.run(TOKEN)
