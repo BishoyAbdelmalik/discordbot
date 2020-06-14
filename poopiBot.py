@@ -8,6 +8,9 @@ import requests
 import os
 import subprocess
 from discord.ext import commands
+import aiohttp
+from io import BytesIO
+from requests.sessions import session
 
 TOKEN = open("token.txt").read()
 # api-endpoint 
@@ -67,7 +70,16 @@ class MyClient(discord.Client):
             r = requests.get(url = link)
             # extracting data in json format 
             data = r.json() 
-            await message.channel.send(file=discord.File(data["meme"]))
+            resp = yield from session.get(data["meme"])
+
+            try:
+                content = yield from resp.read()
+            finally:
+                resp.close()
+            buffer = BytesIO(content)
+
+            yield from client.send_file(message.channel, fp=buffer, filename="something.png")
+            # await message.channel.send(file=discord.File(data["meme"]))
             # await message.channel.send(data["meme"])
             return
         if '!joke' in message.content.lower():
