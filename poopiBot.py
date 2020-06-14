@@ -14,9 +14,9 @@ from requests.sessions import session
 
 TOKEN = open("token.txt").read()
 # api-endpoint 
-meme = "http://localhost:956/dank"
+meme = "http://localhost:956/moderate"
 meme2 = "http://localhost:956/sbubby"
-meme3 = "http://localhost:956/moderate"
+meme3 = "http://localhost:956/dank"
 meme4 = "http://localhost:956/light"
 meme5 = "http://localhost:956/hmm"
 meme6 = "http://localhost:956/meme"
@@ -62,7 +62,7 @@ class MyClient(discord.Client):
                 await message.channel.send('Gwacause'+" <@"+ str(message.author.id)+">")
             return
         if '!meme' in message.content.lower():
-            pick=random.randint(1,5)
+            pick=random.randint(1,7)
             link=meme
             if pick==1:
                 link=meme
@@ -72,6 +72,10 @@ class MyClient(discord.Client):
                 link=meme3
             if pick==4:
                 link=meme4
+            if pick==5:
+                link=meme5
+            if pick==6:
+                link=meme6
             r = requests.get(url = link)
             # extracting data in json format 
             data = r.json() 
