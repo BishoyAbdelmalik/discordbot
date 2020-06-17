@@ -44,6 +44,14 @@ class MyClient(discord.Client):
             await user.create_dm()
             await user.dm_channel.send("Hey, don't send messages in pins channel 😡 😡 😡")
             return
+
+        pick=random.randint(1,100)
+        if pick==5:
+            await message.channel.send('mmmm'+" <@"+ str(message.author.id)+">")
+        
+        if message.mention_everyone:
+            await message.channel.send('mmmm maybe'+" <@"+ str(message.author.id)+">")
+            return
         if '!start 380' in message.content:
             subprocess.Popen(["sh", "/380/server/start.sh"], shell=False,stdin=None, stdout=None, stderr=None, close_fds=True)
             return
@@ -138,10 +146,7 @@ class MyClient(discord.Client):
             else:
                 await message.channel.send('Beautiful'+" <@"+ str(message.author.id)+">")
             return
-        pick=random.randint(1,100)
-        if pick==5:
-            await message.channel.send('mmmm'+" <@"+ str(message.author.id)+">")
-            return
+        
         if '!pin' in message.content.lower():
             #print(message)
             pinChannel=client.get_channel(702270613766537328)
