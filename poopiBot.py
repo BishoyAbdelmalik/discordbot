@@ -38,6 +38,12 @@ class MyClient(discord.Client):
             return
         user=""
         print(message.content)
+        if str(message.channel) == "pins":
+            await message.delete()
+            user = message.author
+            await user.create_dm()
+            await user.dm_channel.send("Hey, don't send messages in pins channel 😡 😡 😡")
+            return
         if '!start 380' in message.content:
             subprocess.Popen(["sh", "/380/server/start.sh"], shell=False,stdin=None, stdout=None, stderr=None, close_fds=True)
             return
