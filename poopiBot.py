@@ -48,7 +48,7 @@ class MyClient(discord.Client):
         pick=random.randint(1,100)
         if pick==5:
             await message.channel.send('mmmm'+" <@"+ str(message.author.id)+">")
-        
+            
         if message.mention_everyone:
             await message.channel.send('mmmm maybe'+" <@"+ str(message.author.id)+">")
             return
@@ -147,7 +147,7 @@ class MyClient(discord.Client):
                 await message.channel.send('Beautiful'+" <@"+ str(message.author.id)+">")
             return
         
-        if '!pin' in message.content.lower():
+        if '!pin' in message.content.lower() or message.pinned:
             #print(message)
             pinChannel=client.get_channel(702270613766537328)
             await pinChannel.send(message.content.replace('!pin', '').strip()+"\n\nPinned by"+" <@"+ str(message.author.id)+">")
