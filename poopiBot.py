@@ -30,8 +30,8 @@ class MyClient(discord.Client):
     async def on_ready(self):
         print(f'{self.user} has connected to Discord!')
         print('Servers connected to:')
-        for channel in client.guilds:
-            print(channel)
+        for server in client.guilds:
+            print(server)
 
     async def on_message(self,message):
         if message.author == self.user:
