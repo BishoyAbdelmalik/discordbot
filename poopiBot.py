@@ -21,12 +21,10 @@ meme4 = "http://localhost:956/light"
 meme5 = "http://localhost:956/hmm"
 meme6 = "http://localhost:956/meme"
 print(os.system("node /bot/memeAPI/server.js &"))
+emojiThumbsUp = '\N{THUMBS UP SIGN}'
+
 # client = discord.Client()
 class MyClient(discord.Client):
-    async def addThumbUpReact(self,message):
-        emoji = '\N{THUMBS UP SIGN}'
-        await message.add_reaction(emoji)
-        return
     async def on_ready(self):
         print(f'{self.user} has connected to Discord!')
         print('Servers connected to:')
@@ -37,14 +35,40 @@ class MyClient(discord.Client):
         if message.author == self.user:
             return
         user=""
+        isAdmin=message.channel.permissions_for(message.author).administrator
+        
         print(message.content)
-        if str(message.channel) == "pins":
-            await message.delete()
-            user = message.author
-            await user.create_dm()
-            await user.dm_channel.send("Hey, don't send messages in pins channel 😡 😡 😡")
-            return
+        if '!setPin' in message.content:
+            if isAdmin:
+                try:
+                    f = open(str(message.guild.id)+"_Pins","x")
+                    f.write(str(message.channel.id))
+                    f.close()
+                    await message.add_reaction(emojiThumbsUp)
+                except:
+                    await message.channel.send("unset pin channel first")
+            else:
+                await message.channel.send("Only admins can set pins channel")
 
+            return
+        if '!unsetPin' in message.content:
+            if isAdmin:
+                try:
+                    os.remove(str(message.guild.id)+"_Pins")
+                except:
+                    print()
+            else:
+                await message.channel.send("Only admins can unset pins channel")
+            return  
+        try:
+            if message.channel.id == int(open(str(message.guild.id)+"_Pins").read()):
+                await message.delete()
+                user = message.author
+                await user.create_dm()
+                await user.dm_channel.send("Hey, don't send messages in pins channel 😡 😡 😡")
+                return
+        except:
+            print("no pins channel")
         pick=random.randint(1,100)
         if pick==5:
             await message.channel.send('mmmm'+" <@"+ str(message.author.id)+">")
@@ -147,12 +171,19 @@ class MyClient(discord.Client):
                 await message.channel.send('Beautiful'+" <@"+ str(message.author.id)+">")
             return
         
-        if '!pin' in message.content.lower() or message.pinned:
-            #print(message)
-            pinChannel=client.get_channel(702270613766537328)
-            await pinChannel.send(message.content.replace('!pin', '').strip()+"\n\nPinned by"+" <@"+ str(message.author.id)+">")
-            await message.channel.send('Pinned ```'+message.content.replace('!pin', '').strip()+'```')
-            await message.delete()
+        if '!pin' in message.content.lower():
+            #print(open(str(message.guild)+"_Pins").read())
+            try:
+                channelID=int(open(str(message.guild.id)+"_Pins").read())
+            except:
+                channelID=-1
+            if channelID==-1:
+                await message.channel.send("set pin channel first")
+            else:
+                pinChannel=client.get_channel(channelID)
+                await pinChannel.send(message.content.replace('!pin', '').strip()+"\n\nPinned by"+" <@"+ str(message.author.id)+">")
+                await message.channel.send('Pinned ```'+message.content.replace('!pin', '').strip()+'```')
+                await message.delete()
             return
         if '!ping' in message.content.lower():
             await message.channel.send(client.latency)
