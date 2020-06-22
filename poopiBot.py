@@ -11,6 +11,16 @@ from discord.ext import commands
 import aiohttp
 from io import BytesIO
 from requests.sessions import session
+from html.parser import HTMLParser 
+
+patheticIMGS=[]
+class MyHTMLParser(HTMLParser):
+    def handle_starttag(self, tag, attrs):
+        if tag == "img":
+            #print("Encountered a start tag:", tag)
+            if attrs[2][0]=="src":
+                #print(attrs[2][1])
+                patheticIMGS.append(attrs[2][1])
 
 TOKEN = open("token.txt").read()
 # api-endpoint 
@@ -98,6 +108,29 @@ class MyClient(discord.Client):
         if 'why' in message.content.lower():
             if bool(random.getrandbits(1)):
                 await message.channel.send('Gwacause'+" <@"+ str(message.author.id)+">")
+            return
+        if '!pathetic' in message.content.lower():
+            response = requests.get("https://www.google.com/search?tbm=isch&q=pathetic+meme", stream=True)
+            imgs=[]
+            parser = MyHTMLParser()
+
+            parser.feed(str(response.content))
+            pick=random.randint(0,len(imgs))
+            response = requests.get(imgs[pick], stream=True)
+            #filename=data["meme"][data["meme"].index("m/")+2:]
+            #print(filename[filename.index("."):])
+            header=response.headers
+            print(header)
+            if  int(response.headers["Content-Length"])<8000000:
+                # extenstion=filename[filename.index("."):]
+                extenstion="."+header["Content-Type"].split("/")[1]
+                filename="pathetic"+extenstion
+                with open(filename, 'wb') as f:
+                    f.write(response.content)
+                await message.channel.send(file=discord.File(filename))
+                os.remove(filename)
+            else:
+                await message.channel.send(imgs[pick])
             return
         if '!meme' in message.content.lower():
             pick=random.randint(1,7)
