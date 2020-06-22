@@ -22,7 +22,7 @@ class MyHTMLParser(HTMLParser):
             #print("Encountered a start tag:", tag)
             for item in attrs:
              if item[0]=="src" and len(item[1]) >0:
-                if "//mc.yandex.ru/watch" not in item[1]:
+                if "//mc.yandex.ru/watch" not in item[1] and "http" not in item[1]:
                     print("http:"+item[1])
                     patheticIMGS.append("http:"+item[1])
            
