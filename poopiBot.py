@@ -102,24 +102,37 @@ class MyClient(discord.Client):
                 await message.channel.send('Gwacause'+" <@"+ str(message.author.id)+">")
             return
         if '!pathetic' in message.content.lower():
-            query = "pathetic meme"
+            pathetic_arr = ["https://media.discordapp.net/attachments/699127599817031700/724169633262862356/pathetic-56074431.png",
+                                "https://media.discordapp.net/attachments/699127599817031700/724168345154224140/unknown.png",
+                                    "https://media.discordapp.net/attachments/699127599817031700/724168083782238208/aexeoj2Y_700w_0.png",
+                                        "https://media.discordapp.net/attachments/699127599817031700/724168065666908190/D-WdtJ9UwAAGkY3.png",
+                                            "https://media.discordapp.net/attachments/699127599817031700/724161695487885322/447.png",
+                                                "https://media.discordapp.net/attachments/699127599817031700/724711838813651014/unknown.png",
+                                                    "https://media.discordapp.net/attachments/699127599817031700/724713507039215646/pathetic.jpeg"]
+            check = random(0, 1) #whatever percentage
+            if check>0:
+                query = "pathetic meme"
 
-            r = requests.get("https://api.qwant.com/api/search/images",
-                params={
-                    'count': 50,
-                    'q': query,
-                    't': 'images',
-                    'locale': 'en_US',
-                    'uiv': 4
-                },
-                headers={
-                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36'
-                }
-            )
+                r = requests.get("https://api.qwant.com/api/search/images",
+                    params={
+                        'count': 50,
+                        'q': query,
+                        't': 'images',
+                        'locale': 'en_US',
+                        'uiv': 4
+                    },
+                    headers={
+                        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36'
+                    }
+                )
 
-            response = r.json().get('data').get('result').get('items')
-            urls = [r.get('media') for r in response]
-            response = requests.get(random.choice(urls), stream=True)
+                response = r.json().get('data').get('result').get('items')
+                urls = [r.get('media') for r in response]
+                url=random.choice(urls)
+            else:
+                url=random.choice(pathetic_arr)
+
+            response = requests.get(url, stream=True)
             #filename=data["meme"][data["meme"].index("m/")+2:]
             #print(filename[filename.index("."):])
             header=response.headers
