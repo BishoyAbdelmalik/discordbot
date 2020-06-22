@@ -11,20 +11,7 @@ from discord.ext import commands
 import aiohttp
 from io import BytesIO
 from requests.sessions import session
-from html.parser import HTMLParser 
 
-patheticIMGS=[]
-class MyHTMLParser(HTMLParser):
-    def empty(self):
-        patheticIMGS=[]
-    def handle_starttag(self, tag, attrs):
-        if tag == "img":
-            #print("Encountered a start tag:", tag)
-            for item in attrs:
-             if item[0]=="src" and len(item[1]) >0:
-                if "//mc.yandex.ru/watch" not in item[1]:
-                    print("http:"+item[1])
-                    patheticIMGS.append("http:"+item[1])
            
 
 TOKEN = open("token.txt").read()
@@ -115,13 +102,24 @@ class MyClient(discord.Client):
                 await message.channel.send('Gwacause'+" <@"+ str(message.author.id)+">")
             return
         if '!pathetic' in message.content.lower():
-            response = requests.get("https://yandex.com/images/search?text=pathetic%20meme", stream=True)
-            parser = MyHTMLParser()
-            parser.empty()
-            parser.feed(str(response.content))
-            print(patheticIMGS)
-            pick=random.randint(0,len(patheticIMGS))
-            response = requests.get(patheticIMGS[pick], stream=True)
+            query = "pathetic meme"
+
+            r = requests.get("https://api.qwant.com/api/search/images",
+                params={
+                    'count': 50,
+                    'q': query,
+                    't': 'images',
+                    'locale': 'en_US',
+                    'uiv': 4
+                },
+                headers={
+                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36'
+                }
+            )
+
+            response = r.json().get('data').get('result').get('items')
+            urls = [r.get('media') for r in response]
+            response = requests.get(random.choice(urls), stream=True)
             #filename=data["meme"][data["meme"].index("m/")+2:]
             #print(filename[filename.index("."):])
             header=response.headers
