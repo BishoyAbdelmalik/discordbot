@@ -111,12 +111,12 @@ class MyClient(discord.Client):
             return
         if '!pathetic' in message.content.lower():
             response = requests.get("https://www.google.com/search?tbm=isch&q=pathetic+meme", stream=True)
-            imgs=[]
+            patheticIMGS=[]
             parser = MyHTMLParser()
 
             parser.feed(str(response.content))
-            pick=random.randint(0,len(imgs))
-            response = requests.get(imgs[pick], stream=True)
+            pick=random.randint(0,len(patheticIMGS))
+            response = requests.get(patheticIMGS[pick], stream=True)
             #filename=data["meme"][data["meme"].index("m/")+2:]
             #print(filename[filename.index("."):])
             header=response.headers
@@ -130,7 +130,7 @@ class MyClient(discord.Client):
                 await message.channel.send(file=discord.File(filename))
                 os.remove(filename)
             else:
-                await message.channel.send(imgs[pick])
+                await message.channel.send(patheticIMGS[pick])
             return
         if '!meme' in message.content.lower():
             pick=random.randint(1,7)
