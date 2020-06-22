@@ -109,7 +109,7 @@ class MyClient(discord.Client):
                                             "https://media.discordapp.net/attachments/699127599817031700/724161695487885322/447.png",
                                                 "https://media.discordapp.net/attachments/699127599817031700/724711838813651014/unknown.png",
                                                     "https://media.discordapp.net/attachments/699127599817031700/724713507039215646/pathetic.jpeg"]
-            check = random(0, 1) #whatever percentage
+            check = random.randint(0, 1) #whatever percentage
             if check>0:
                 query = "pathetic meme"
 
