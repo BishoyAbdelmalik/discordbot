@@ -20,9 +20,12 @@ class MyHTMLParser(HTMLParser):
     def handle_starttag(self, tag, attrs):
         if tag == "img":
             #print("Encountered a start tag:", tag)
-            if attrs[2][0]=="src":
-                #print(attrs[2][1])
-                patheticIMGS.append(attrs[2][1])
+            for item in attrs:
+             if item[0]=="src" and len(item[1]) >0:
+                if "//mc.yandex.ru/watch" not in item[1]:
+                    print("http:"+item[1])
+                    patheticIMGS.append("http:"+item[1])
+           
 
 TOKEN = open("token.txt").read()
 # api-endpoint 
@@ -112,7 +115,7 @@ class MyClient(discord.Client):
                 await message.channel.send('Gwacause'+" <@"+ str(message.author.id)+">")
             return
         if '!pathetic' in message.content.lower():
-            response = requests.get("https://www.google.com/search?tbm=isch&q=pathetic+meme", stream=True)
+            response = requests.get("https://yandex.com/images/search?text=pathetic%20meme", stream=True)
             parser = MyHTMLParser()
             parser.empty()
             parser.feed(str(response.content))
