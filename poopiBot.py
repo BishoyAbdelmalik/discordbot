@@ -15,6 +15,8 @@ from html.parser import HTMLParser
 
 patheticIMGS=[]
 class MyHTMLParser(HTMLParser):
+    def empty(self):
+        patheticIMGS=[]
     def handle_starttag(self, tag, attrs):
         if tag == "img":
             #print("Encountered a start tag:", tag)
@@ -111,10 +113,10 @@ class MyClient(discord.Client):
             return
         if '!pathetic' in message.content.lower():
             response = requests.get("https://www.google.com/search?tbm=isch&q=pathetic+meme", stream=True)
-            patheticIMGS=[]
             parser = MyHTMLParser()
-
+            parser.empty()
             parser.feed(str(response.content))
+            print(patheticIMGS)
             pick=random.randint(0,len(patheticIMGS))
             response = requests.get(patheticIMGS[pick], stream=True)
             #filename=data["meme"][data["meme"].index("m/")+2:]
