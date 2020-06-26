@@ -74,7 +74,20 @@ class MyClient(discord.Client):
         pick=random.randint(1,100)
         if pick==5:
             await message.channel.send('mmmm'+" <@"+ str(message.author.id)+">")
-            
+        if '!pin' in message.content.lower():
+            #print(open(str(message.guild)+"_Pins").read())
+            try:
+                channelID=int(open(str(message.guild.id)+"_Pins").read())
+            except:
+                channelID=-1
+            if channelID==-1:
+                await message.channel.send("set pin channel first")
+            else:
+                pinChannel=client.get_channel(channelID)
+                await pinChannel.send(message.content.replace('!pin', '').strip()+"\n\nPinned by"+" <@"+ str(message.author.id)+">")
+                await message.channel.send('Pinned ```'+message.content.replace('!pin', '').strip()+'```')
+                await message.delete()
+            return
         if message.mention_everyone:
             await message.channel.send('mmmm maybe'+" <@"+ str(message.author.id)+">")
             return
@@ -218,21 +231,6 @@ class MyClient(discord.Client):
                 await message.channel.send('Beautiful'+" "+ user )
             else:
                 await message.channel.send('Beautiful'+" <@"+ str(message.author.id)+">")
-            return
-        
-        if '!pin' in message.content.lower():
-            #print(open(str(message.guild)+"_Pins").read())
-            try:
-                channelID=int(open(str(message.guild.id)+"_Pins").read())
-            except:
-                channelID=-1
-            if channelID==-1:
-                await message.channel.send("set pin channel first")
-            else:
-                pinChannel=client.get_channel(channelID)
-                await pinChannel.send(message.content.replace('!pin', '').strip()+"\n\nPinned by"+" <@"+ str(message.author.id)+">")
-                await message.channel.send('Pinned ```'+message.content.replace('!pin', '').strip()+'```')
-                await message.delete()
             return
         if '!ping' in message.content.lower():
             await message.channel.send(client.latency)
