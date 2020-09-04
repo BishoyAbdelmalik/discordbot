@@ -114,6 +114,10 @@ class MyClient(discord.Client):
             if bool(random.getrandbits(1)):
                 await message.channel.send('Gwacause'+" <@"+ str(message.author.id)+">")
             return
+        if 'user' in message.content.lower():
+            if bool(random.getrandbits(1)):
+                await message.channel.send('Jyuicerr'+" <@"+ str(message.author.id)+">")
+            return
         if '!pathetic' in message.content.lower():
             pathetic_arr = ["https://media.discordapp.net/attachments/699127599817031700/724169633262862356/pathetic-56074431.png",
                                 "https://media.discordapp.net/attachments/699127599817031700/724168345154224140/unknown.png",
@@ -124,7 +128,7 @@ class MyClient(discord.Client):
                                                     "https://media.discordapp.net/attachments/699127599817031700/724713507039215646/pathetic.jpeg",
                                                                  "https://cdn.discordapp.com/attachments/678381326533132324/739654715268137071/unknown_3.png"]
             check = random.randint(0, 1) #whatever percentage
-            if check>0:
+            if not check:
                 query = "pathetic meme"
 
                 r = requests.get("https://api.qwant.com/api/search/images",
@@ -144,7 +148,11 @@ class MyClient(discord.Client):
                 urls = [r.get('media') for r in response]
                 url=random.choice(urls)
             else:
-                url=random.choice(pathetic_arr)
+                check = random.randint(0, 1)
+                if not check:
+                    url = pathetic_arr[7]
+                else:
+                    url=random.choice(pathetic_arr)
 
             response = requests.get(url, stream=True)
             #filename=data["meme"][data["meme"].index("m/")+2:]
