@@ -1,9 +1,5 @@
 Personal Discord Bot
 ==========
-
-.. image:: https://discordapp.com/api/guilds/336642139381301249/embed.png
-   :target: https://discord.gg/r3sSKJJ
-   :alt: Discord server invite
 .. image:: https://img.shields.io/pypi/v/discord.py.svg
    :target: https://pypi.python.org/pypi/discord.py
    :alt: PyPI version info
@@ -16,7 +12,7 @@ Discord Bot that helps in some personal discord servers that me and my friends t
 Key Features
 -------------
 
-- Send memes 
-- Send jokes
+- Send memes and jokes
 - Welcome people joinning the server 
 - randomly respond to people 
+- pin messages in a pins channel 
