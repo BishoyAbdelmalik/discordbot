@@ -88,6 +88,9 @@ class MyClient(discord.Client):
                 await message.channel.send('Pinned ```'+message.content.replace('!pin', '').strip()+'```')
                 await message.delete()
             return
+        if '!bugs' in message.content.lower():
+            await message.channel.send("https://media.discordapp.net/attachments/538955632951296010/771989679713157140/db1.png")
+            return
         if message.mention_everyone:
             await message.channel.send('mmmm maybe'+" <@"+ str(message.author.id)+">")
             return
