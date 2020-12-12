@@ -7,7 +7,7 @@ Personal Discord Bot
    :target: https://pypi.python.org/pypi/discord.py
    :alt: PyPI supported Python versions
 
-Discord Bot that helps in some personal discord servers that I and my friends talk on. 
+Discord Bot that helps in some personal discord servers that my friends and I talk on. 
 
 Key Features
 -------------
