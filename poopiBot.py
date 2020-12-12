@@ -11,7 +11,16 @@ from discord.ext import commands
 import aiohttp
 from io import BytesIO
 from requests.sessions import session
+import youtube_dl
 
+ydl_opts = {
+    'format': 'bestaudio/best',
+    'postprocessors': [{
+        'key': 'FFmpegExtractAudio',
+        'preferredcodec': 'mp3',
+        'preferredquality': '192',
+    }],
+}   
            
 
 TOKEN = open("token.txt").read()
@@ -95,6 +104,9 @@ class MyClient(discord.Client):
             else:
                 channel = message.author.voice.channel
                 voice_client = await channel.connect()
+                msg =message.content
+                url =msg[msg.index('!!p')+3:].strip()
+                print(url)
             return
         if '!bugs' in message.content.lower():
             await message.channel.send("https://media.discordapp.net/attachments/538955632951296010/771989679713157140/db1.png")
