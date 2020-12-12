@@ -88,6 +88,14 @@ class MyClient(discord.Client):
                 await message.channel.send('Pinned ```'+message.content.replace('!pin', '').strip()+'```')
                 await message.delete()
             return
+        if '!!p' in message.content.lower():
+            if not message.author.voice:
+                await message.channel.send("join vc first")
+                
+            else:
+                channel = message.author.voice.channel
+                voice_client = await channel.connect()
+            return
         if '!bugs' in message.content.lower():
             await message.channel.send("https://media.discordapp.net/attachments/538955632951296010/771989679713157140/db1.png")
             return
