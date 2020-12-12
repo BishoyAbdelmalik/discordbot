@@ -41,7 +41,8 @@ class MyClient(discord.Client):
         print('Servers connected to:')
         for server in client.guilds:
             print(server)
-
+    def endSong(guild, path):
+        os.remove(path)
     async def on_message(self,message):
         if message.author == self.user:
             return
@@ -107,6 +108,13 @@ class MyClient(discord.Client):
                 msg =message.content
                 url =msg[msg.index('!!p')+3:].strip()
                 print(url)
+                guild = message.guild
+                with youtube_dl.YoutubeDL(ydl_opts) as ydl:
+                    file = ydl.extract_info(url, download=True)
+                    path = str(file['title']) + "-" + str(file['id'] + ".mp3")
+
+                voice_client.play(discord.FFmpegPCMAudio(path), after=lambda x: endSong(guild, path))
+                voice_client.source = discord.PCMVolumeTransformer(voice_client.source, 1)
             return
         if '!bugs' in message.content.lower():
             await message.channel.send("https://media.discordapp.net/attachments/538955632951296010/771989679713157140/db1.png")
