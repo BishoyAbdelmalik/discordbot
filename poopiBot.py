@@ -52,6 +52,32 @@ def get_url(url):
     else:
         url=url
     return url
+async def music_play(message):
+    if not message.author.voice:
+        await message.channel.send("join vc first")
+                
+    else:
+        global voice_client
+        channel = message.author.voice.channel
+        try:
+            voice_client = await channel.connect()
+        except:
+            print("already in vc add music")
+            if(voice_client==None):
+                await message.channel.send("error")
+                return
+
+            msg =message.content
+            url =get_url(msg[msg.index('!!p')+3:].strip())
+
+            print(url)
+            guild = message.guild
+            with youtube_dl.YoutubeDL(ydl_opts) as ydl:
+                file = ydl.extract_info(url, download=True)
+                path =str(file['id'] + ".mp3")
+            playMusic(voice_client,path)
+    return
+
 class MyClient(discord.Client):
     async def on_ready(self):
         print(f'{self.user} has connected to Discord!')
@@ -115,31 +141,7 @@ class MyClient(discord.Client):
                 await message.delete()
             return
         if '!!p' in message.content.lower():
-            if not message.author.voice:
-                await message.channel.send("join vc first")
-                
-            else:
-                global voice_client
-                channel = message.author.voice.channel
-                try:
-                    voice_client = await channel.connect()
-                except:
-                    print("already in vc add music")
-                if(voice_client==None):
-                    await message.channel.send("error")
-                    return
-
-                msg =message.content
-                url =msg[msg.index('!!p')+3:].strip()
-                url =get_url(url)
-
-
-                print(url)
-                guild = message.guild
-                with youtube_dl.YoutubeDL(ydl_opts) as ydl:
-                    file = ydl.extract_info(url, download=True)
-                    path =str(file['id'] + ".mp3")
-                playMusic(voice_client,path)
+            music_play(message)
             return
         if '!bugs' in message.content.lower():
             await message.channel.send("https://media.discordapp.net/attachments/538955632951296010/771989679713157140/db1.png")
