@@ -108,12 +108,12 @@ class MyClient(discord.Client):
                 await message.channel.send("join vc first")
                 
             else:
+                global voice_client
                 channel = message.author.voice.channel
                 try:
                     voice_client = await channel.connect()
                 except:
                     print("already in vc add music")
-
                 if(voice_client==None):
                     await message.channel.send("error")
                     return
