@@ -12,7 +12,9 @@ import aiohttp
 from io import BytesIO
 from requests.sessions import session
 import youtube_dl
-
+from youtube_search import YoutubeSearch   
+import validators
+import json
 ydl_opts = {
     'format': 'bestaudio/best',
     'outtmpl': '%(id)s.mp3',
@@ -41,6 +43,15 @@ def endSong(path):
 def playMusic(voice_client,path):
     voice_client.play(discord.FFmpegPCMAudio(path), after=lambda x: endSong(path))
     voice_client.source = discord.PCMVolumeTransformer(voice_client.source, 1)  
+def get_url(url):
+    if not validators.url(url):
+        youtube_search = YoutubeSearch(url, max_results=1).to_json()   
+        youtube_search= json.loads(youtube_search)
+        v_id=youtube_search["videos"][0]["id"]
+        url="https://www.youtube.com/watch?v="+v_id
+    else:
+        url=url
+    return url
 class MyClient(discord.Client):
     async def on_ready(self):
         print(f'{self.user} has connected to Discord!')
@@ -120,6 +131,9 @@ class MyClient(discord.Client):
 
                 msg =message.content
                 url =msg[msg.index('!!p')+3:].strip()
+                url =get_url(url)
+
+
                 print(url)
                 guild = message.guild
                 with youtube_dl.YoutubeDL(ydl_opts) as ydl:
