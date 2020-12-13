@@ -123,7 +123,7 @@ class MyClient(discord.Client):
                 print(url)
                 guild = message.guild
                 with youtube_dl.YoutubeDL(ydl_opts) as ydl:
-                    file = ydl.extract_info(url, download=False)
+                    file = ydl.extract_info(url, download=True)
                     path =str(file['id'] + ".mp3")
                 playMusic(voice_client,path)
             return
