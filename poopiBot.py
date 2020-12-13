@@ -141,7 +141,7 @@ class MyClient(discord.Client):
                 await message.delete()
             return
         if '!!p' in message.content.lower():
-            music_play(message)
+            await music_play(message)
             return
         if '!bugs' in message.content.lower():
             await message.channel.send("https://media.discordapp.net/attachments/538955632951296010/771989679713157140/db1.png")
