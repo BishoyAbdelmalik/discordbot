@@ -34,10 +34,13 @@ meme5 = "http://localhost:956/programing"
 meme6 = "http://localhost:956/meme"
 print(os.system("node /bot/memeAPI/server.js &"))
 emojiThumbsUp = '\N{THUMBS UP SIGN}'
-
+voice_client=None
 # client = discord.Client()
-def endSong(guild, path):
+def endSong(path):
         os.remove(path)
+def playMusic(voice_client,path):
+    voice_client.play(discord.FFmpegPCMAudio(path), after=lambda x: endSong(path))
+    voice_client.source = discord.PCMVolumeTransformer(voice_client.source, 1)  
 class MyClient(discord.Client):
     async def on_ready(self):
         print(f'{self.user} has connected to Discord!')
@@ -106,19 +109,23 @@ class MyClient(discord.Client):
                 
             else:
                 channel = message.author.voice.channel
-                voice_client = await channel.connect()
+                try:
+                    voice_client = await channel.connect()
+                except:
+                    print("already in vc add music")
+
+                if(voice_client==None):
+                    await message.channel.send("error")
+                    return
+
                 msg =message.content
                 url =msg[msg.index('!!p')+3:].strip()
                 print(url)
                 guild = message.guild
                 with youtube_dl.YoutubeDL(ydl_opts) as ydl:
-                    file = ydl.extract_info(url, download=True)
+                    file = ydl.extract_info(url, download=False)
                     path =str(file['id'] + ".mp3")
-                
-                voice_client.play(discord.FFmpegPCMAudio(path), after=lambda x: endSong(guild, path))
-                voice_client.source = discord.PCMVolumeTransformer(voice_client.source, 1)   
-
-               
+                playMusic(voice_client,path)
             return
         if '!bugs' in message.content.lower():
             await message.channel.send("https://media.discordapp.net/attachments/538955632951296010/771989679713157140/db1.png")
