@@ -116,7 +116,8 @@ class MyClient(discord.Client):
                 servers[guild]["song_count"][path]=0
             servers[guild]["song_count"][path]=servers[guild]["song_count"][path]+1
             playMusic(guild)
-            
+
+            await message.channel.send(url+"\nAdded to the queue")           
             
         return
     async def on_ready(self):
