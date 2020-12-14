@@ -58,13 +58,12 @@ def playMusic(guild):
         servers[guild]["voice_client"].source = discord.PCMVolumeTransformer(servers[guild]["voice_client"].source, 1)
   
 def get_url(url):
-    if not validators.url(url):
-        youtube_search = YoutubeSearch(url, max_results=1).to_json()   
-        youtube_search= json.loads(youtube_search)
-        v_id=youtube_search["videos"][0]["id"]
-        url="https://www.youtube.com/watch?v="+v_id
-    else:
-        url=url
+	for i in range(len(url)):
+		if not validators.url(url[i]):
+			youtube_search = YoutubeSearch(url[i], max_results=1).to_json()   
+			youtube_search= json.loads(youtube_search)
+			v_id=youtube_search["videos"][0]["id"]
+			url[i]="https://www.youtube.com/watch?v="+v_id
     return url
 
 
@@ -102,22 +101,22 @@ class MyClient(discord.Client):
                     return
 
             msg =message.content
-            url =get_url(msg[msg.index('!!p')+3:].strip())
-
-            print(url)
-            with youtube_dl.YoutubeDL(ydl_opts) as ydl:
-                file = ydl.extract_info(url, download=True)
-                path =str(file['id'] + ".mp3")
-            
-            servers[guild]["music_queue"].put(path)
-            if not "song_count" in servers[guild]:
-                servers[guild]["song_count"]={}
-            if not path in servers[guild]["song_count"]:
-                servers[guild]["song_count"][path]=0
-            servers[guild]["song_count"][path]=servers[guild]["song_count"][path]+1
-            playMusic(guild)
-
-            await message.channel.send(url+"\nAdded to the queue")           
+            urls =get_url(msg.split()[1:])
+			
+			for url in urls:
+				print(url)
+				with youtube_dl.YoutubeDL(ydl_opts) as ydl:
+					file = ydl.extract_info(url, download=True)
+					path =str(file['id'] + ".mp3")
+				
+				servers[guild]["music_queue"].put(path)
+				if not "song_count" in servers[guild]:
+					servers[guild]["song_count"]={}
+				if not path in servers[guild]["song_count"]:
+					servers[guild]["song_count"][path]=0
+				servers[guild]["song_count"][path]=servers[guild]["song_count"][path]+1
+				playMusic(guild)
+				await message.channel.send(url+"\nAdded to the queue")           
             
         return
     async def on_ready(self):
