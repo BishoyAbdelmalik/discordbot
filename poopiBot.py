@@ -2,6 +2,7 @@
 import discord
 import threading
 import asyncio
+from discord import channel
 import substring
 import random
 import requests 
@@ -15,6 +16,8 @@ import youtube_dl
 from youtube_search import YoutubeSearch   
 import validators
 import json
+import queue
+
 ydl_opts = {
     'format': 'bestaudio/best',
     'outtmpl': '%(id)s.mp3',
@@ -36,13 +39,24 @@ meme5 = "http://localhost:956/programing"
 meme6 = "http://localhost:956/meme"
 print(os.system("node /bot/memeAPI/server.js &"))
 emojiThumbsUp = '\N{THUMBS UP SIGN}'
-voice_client=None
+servers={}
 # client = discord.Client()
-def endSong(path):
+def endSong(guild,path):
+    servers[guild]["song_count"][path]=servers[guild]["song_count"][path]-1
+    if servers[guild]["song_count"][path] is 0:
         os.remove(path)
-def playMusic(voice_client,path):
-    voice_client.play(discord.FFmpegPCMAudio(path), after=lambda x: endSong(path))
-    voice_client.source = discord.PCMVolumeTransformer(voice_client.source, 1)  
+        servers[guild]["song_count"].pop(path)
+
+    if not servers[guild]["music_queue"].empty():
+        playMusic(guild)
+def playMusic(guild):
+    if servers[guild]["voice_client"].is_playing():
+        return
+    if not servers[guild]["music_queue"].empty():
+        path=servers[guild]["music_queue"].get()
+        servers[guild]["voice_client"].play(discord.FFmpegPCMAudio(path), after=lambda x: endSong(guild,path))
+        servers[guild]["voice_client"].source = discord.PCMVolumeTransformer(servers[guild]["voice_client"].source, 1)
+  
 def get_url(url):
     if not validators.url(url):
         youtube_search = YoutubeSearch(url, max_results=1).to_json()   
@@ -55,30 +69,55 @@ def get_url(url):
 
 
 class MyClient(discord.Client):
-    async def music_play(message):
+    async def music_skip(self,message):
+        global servers
+        
+        guild = message.guild
+        if servers[guild]["music_queue"].empty():
+            await message.channel.send("No more files in queue")
+        servers[guild]["voice_client"].stop()
+        return
+
+    async def music_play(self,message):
         if not message.author.voice:
             await message.channel.send("join vc first")
                     
         else:
-            global voice_client
+            global servers
+            guild = message.guild
+
             channel = message.author.voice.channel
+            if not guild in servers:
+                servers[guild]={}
+            if not "music_queue" in servers[guild]:
+                music_queue = queue.Queue()
+                servers[guild]["music_queue"]=music_queue
+
             try:
-                voice_client = await channel.connect()
+                servers[guild]["voice_client"] = await channel.connect()
             except:
                 print("already in vc add music")
-                if(voice_client==None):
+                if(servers[guild]["voice_client"] ==None):
                     await message.channel.send("error")
                     return
 
-                msg =message.content
-                url =get_url(msg[msg.index('!!p')+3:].strip())
+            msg =message.content
+            url =get_url(msg[msg.index('!!p')+3:].strip())
 
-                print(url)
-                guild = message.guild
-                with youtube_dl.YoutubeDL(ydl_opts) as ydl:
-                    file = ydl.extract_info(url, download=True)
-                    path =str(file['id'] + ".mp3")
-                playMusic(voice_client,path)
+            print(url)
+            with youtube_dl.YoutubeDL(ydl_opts) as ydl:
+                file = ydl.extract_info(url, download=True)
+                path =str(file['id'] + ".mp3")
+            
+            servers[guild]["music_queue"].put(path)
+            if not "song_count" in servers[guild]:
+                servers[guild]["song_count"]={}
+            if not path in servers[guild]["song_count"]:
+                servers[guild]["song_count"][path]=0
+            servers[guild]["song_count"][path]=servers[guild]["song_count"][path]+1
+            playMusic(guild)
+            
+            
         return
     async def on_ready(self):
         print(f'{self.user} has connected to Discord!')
@@ -142,7 +181,10 @@ class MyClient(discord.Client):
                 await message.delete()
             return
         if '!!p' in message.content.lower():
-            await music_play(message)
+            await self.music_play(message)
+            return
+        if '!!skip' in message.content.lower():
+            await self.music_skip(message)
             return
         if '!bugs' in message.content.lower():
             await message.channel.send("https://media.discordapp.net/attachments/538955632951296010/771989679713157140/db1.png")
