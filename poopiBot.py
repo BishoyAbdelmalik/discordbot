@@ -54,6 +54,7 @@ def playMusic(guild):
 		return
 	if not servers[guild]["music_queue"].empty():
 		path=servers[guild]["music_queue"].get()
+		servers[guild]["current_playing"]=path[:-4]
 		servers[guild]["voice_client"].play(discord.FFmpegPCMAudio(path), after=lambda x: endSong(guild,path))
 		servers[guild]["voice_client"].source = discord.PCMVolumeTransformer(servers[guild]["voice_client"].source, 1)
   
@@ -77,6 +78,15 @@ class MyClient(discord.Client):
 		servers[guild]["voice_client"].stop()
 		return
 
+	async def music_now_playing(self,message):
+		global servers
+		guild = message.guild
+
+		if not servers[guild]["voice_client"].is_playing():
+			await message.channel.send("Nothing is playing")
+		else:
+			await message.channel.send("https://www.youtube.com/watch?v="+servers[guild]["current_playing"])
+		return
 	async def music_play(self,message):
 		if not message.author.voice:
 			await message.channel.send("join vc first")
@@ -116,8 +126,10 @@ class MyClient(discord.Client):
 					servers[guild]["song_count"][path]=0
 				servers[guild]["song_count"][path]=servers[guild]["song_count"][path]+1
 				playMusic(guild)
-				await message.channel.send(url+"\nAdded to the queue")           
-			
+				if len(urls)<2:
+					await message.channel.send(url+"\nAdded to the queue")           
+			if len(urls)>1:
+				await message.channel.send(len(urls)+" songs added to the queue")           
 		return
 	async def on_ready(self):
 		print(f'{self.user} has connected to Discord!')
@@ -183,8 +195,12 @@ class MyClient(discord.Client):
 		if '!!p' in message.content.lower():
 			await self.music_play(message)
 			return
-		if '!!skip' in message.content.lower():
+		
+		if '!!skip' in message.content.lower() or '!!s' in message.content.lower():
 			await self.music_skip(message)
+			return
+		if '!!np' in message.content.lower():
+			await self.music_now_playing(message)
 			return
 		if '!bugs' in message.content.lower():
 			await message.channel.send("https://media.discordapp.net/attachments/538955632951296010/771989679713157140/db1.png")
