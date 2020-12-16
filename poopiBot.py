@@ -16,7 +16,7 @@ import youtube_dl
 from youtube_search import YoutubeSearch   
 import validators
 import json
-import queue
+from collections import deque
 
 ydl_opts = {
 	'format': 'bestaudio/best',
@@ -47,16 +47,22 @@ def endSong(guild,path):
 		os.remove(path)
 		servers[guild]["song_count"].pop(path)
 
-	if not servers[guild]["music_queue"].empty():
+	if len(servers[guild]["music_queue"]) !=0:
 		playMusic(guild)
+def download_song(v_id):
+	with youtube_dl.YoutubeDL(ydl_opts) as ydl:
+		ydl.extract_info(get_yt_url(v_id), download=True)
 def playMusic(guild):
 	if servers[guild]["voice_client"].is_playing():
 		return
-	if not servers[guild]["music_queue"].empty():
-		path=servers[guild]["music_queue"].get()
+	if len(servers[guild]["music_queue"]) !=0:
+		path=servers[guild]["music_queue"].pop()
 		servers[guild]["current_playing"]=path[:-4]
+		download_song(path[:-4])
 		servers[guild]["voice_client"].play(discord.FFmpegPCMAudio(path), after=lambda x: endSong(guild,path))
 		servers[guild]["voice_client"].source = discord.PCMVolumeTransformer(servers[guild]["voice_client"].source, 1)
+		if len(servers[guild]["music_queue"]) !=0:
+			download_song(servers[guild]["music_queue"][0][:-4])
   
 def get_url(url):
 	for i in range(len(url)):
@@ -64,16 +70,17 @@ def get_url(url):
 			youtube_search = YoutubeSearch(url[i], max_results=1).to_json()   
 			youtube_search= json.loads(youtube_search)
 			v_id=youtube_search["videos"][0]["id"]
-			url[i]="https://www.youtube.com/watch?v="+v_id
+			url[i]=get_yt_url(v_id)
 	return url
-
+def get_yt_url(v_id):
+	return "https://www.youtube.com/watch?v="+v_id
 
 class MyClient(discord.Client):
 	async def music_skip(self,message):
 		global servers
 		
 		guild = message.guild
-		if servers[guild]["music_queue"].empty():
+		if len(servers[guild]["music_queue"]) == 0:
 			await message.channel.send("No more files in queue")
 		servers[guild]["voice_client"].stop()
 		return
@@ -85,7 +92,7 @@ class MyClient(discord.Client):
 		if not servers[guild]["voice_client"].is_playing():
 			await message.channel.send("Nothing is playing")
 		else:
-			await message.channel.send("https://www.youtube.com/watch?v="+servers[guild]["current_playing"])
+			await message.channel.send(get_yt_url(servers[guild]["current_playing"]))
 		return
 	async def music_play(self,message):
 		if not message.author.voice:
@@ -100,7 +107,7 @@ class MyClient(discord.Client):
 			if not guild in servers:
 				servers[guild]={}
 			if not "music_queue" in servers[guild]:
-				music_queue = queue.Queue()
+				music_queue = deque()
 				servers[guild]["music_queue"]=music_queue
 
 			try:
@@ -116,21 +123,20 @@ class MyClient(discord.Client):
 			
 			for url in urls:
 				print(url)
-				with youtube_dl.YoutubeDL(ydl_opts) as ydl:
-					file = ydl.extract_info(url, download=True)
-					path =str(file['id'] + ".mp3")
-				
-				servers[guild]["music_queue"].put(path)
+				path =url[url.index("v=")+2:]  + ".mp3"
+				servers[guild]["music_queue"].appendleft(path)
 				if not "song_count" in servers[guild]:
 					servers[guild]["song_count"]={}
 				if not path in servers[guild]["song_count"]:
 					servers[guild]["song_count"][path]=0
 				servers[guild]["song_count"][path]=servers[guild]["song_count"][path]+1
-				playMusic(guild)
 				if len(urls)<2:
-					await message.channel.send(url+"\nAdded to the queue")           
+					await message.channel.send(url+"\nAdded to the queue")
+			           
 			if len(urls)>1:
 				await message.channel.send(str(len(urls))+" songs added to the queue")           
+			playMusic(guild)
+
 		return
 	async def on_ready(self):
 		print(f'{self.user} has connected to Discord!')
