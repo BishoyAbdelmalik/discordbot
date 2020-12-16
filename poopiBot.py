@@ -129,7 +129,7 @@ class MyClient(discord.Client):
 				if len(urls)<2:
 					await message.channel.send(url+"\nAdded to the queue")           
 			if len(urls)>1:
-				await message.channel.send(len(urls)+" songs added to the queue")           
+				await message.channel.send(str(len(urls))+" songs added to the queue")           
 		return
 	async def on_ready(self):
 		print(f'{self.user} has connected to Discord!')
