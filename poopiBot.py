@@ -92,6 +92,7 @@ class MyClient(discord.Client):
 			await message.channel.send("join vc first")
 					
 		else:
+			await message.delete()
 			global servers
 			guild = message.guild
 
