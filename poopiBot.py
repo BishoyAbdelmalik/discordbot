@@ -40,13 +40,16 @@ emojiThumbsUp = '\N{THUMBS UP SIGN}'
 servers={}
 # client = discord.Client()
 def endSong(guild,path):
-	servers[guild]["song_count"][path]=servers[guild]["song_count"][path]-1
-	if servers[guild]["song_count"][path] == 0:
-		os.remove(path)
-		servers[guild]["song_count"].pop(path)
+	if not servers[guild]["voice_client"].is_connected():
+		servers[guild]={}
+	else:
+		servers[guild]["song_count"][path]=servers[guild]["song_count"][path]-1
+		if servers[guild]["song_count"][path] == 0:
+			os.remove(path)
+			servers[guild]["song_count"].pop(path)
 
-	if len(servers[guild]["music_queue"]) !=0:
-		playMusic(guild)
+		if len(servers[guild]["music_queue"]) !=0:
+			playMusic(guild)
 def download_song(v_id):
 	with youtube_dl.YoutubeDL(ydl_opts) as ydl:
 		ydl.extract_info(get_yt_url(v_id), download=True)
