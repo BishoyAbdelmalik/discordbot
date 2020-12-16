@@ -145,7 +145,49 @@ class MyClient(discord.Client):
 			if len(urls)>1:
 				await message.channel.send(str(len(urls))+" songs added to the queue")           
 			playMusic(guild)
+		return
+	async def music_play_top(self,message):
+		if not message.author.voice:
+			await message.channel.send("join vc first")
+					
+		else:
+			await message.delete()
+			global servers
+			guild = message.guild
 
+			channel = message.author.voice.channel
+			if not guild in servers:
+				servers[guild]={}
+			if not "music_queue" in servers[guild]:
+				music_queue = deque()
+				servers[guild]["music_queue"]=music_queue
+
+			try:
+				servers[guild]["voice_client"] = await channel.connect()
+			except:
+				print("already in vc add music")
+				if(servers[guild]["voice_client"] == None):
+					await message.channel.send("error")
+					return
+
+			msg =message.content
+			urls =get_url(msg.split()[1:])
+			print(urls)
+			for url in urls:
+				print(url)
+				path =url[url.index("v=")+2:]  + ".mp3"
+				servers[guild]["music_queue"].append(path)
+				if not "song_count" in servers[guild]:
+					servers[guild]["song_count"]={}
+				if not path in servers[guild]["song_count"]:
+					servers[guild]["song_count"][path]=0
+				servers[guild]["song_count"][path]=servers[guild]["song_count"][path]+1
+				if len(urls)<2:
+					await message.channel.send(url+"\nAdded to the queue")
+			           
+			if len(urls)>1:
+				await message.channel.send(str(len(urls))+" songs added to the queue")           
+			playMusic(guild)
 		return
 	async def on_ready(self):
 		print(f'{self.user} has connected to Discord!')
@@ -211,7 +253,9 @@ class MyClient(discord.Client):
 		if '!!p' in message.content.lower():
 			await self.music_play(message)
 			return
-		
+		if '!!pt' in message.content.lower():
+			await self.music_play_top(message)
+			return
 		if '!!skip' in message.content.lower() or '!!s' in message.content.lower():
 			await self.music_skip(message)
 			return
