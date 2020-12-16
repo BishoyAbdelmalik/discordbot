@@ -27,8 +27,6 @@ ydl_opts = {
 		'preferredquality': '192',
 	}],
 }   
-		   
-
 TOKEN = open("token.txt").read()
 # api-endpoint 
 meme = "http://localhost:956/moderate"
@@ -43,7 +41,7 @@ servers={}
 # client = discord.Client()
 def endSong(guild,path):
 	servers[guild]["song_count"][path]=servers[guild]["song_count"][path]-1
-	if servers[guild]["song_count"][path] is 0:
+	if servers[guild]["song_count"][path] == 0:
 		os.remove(path)
 		servers[guild]["song_count"].pop(path)
 
@@ -71,7 +69,18 @@ def get_url(url):
 			youtube_search= json.loads(youtube_search)
 			v_id=youtube_search["videos"][0]["id"]
 			url[i]=get_yt_url(v_id)
+		elif "list" in url[i] or "playlist" in url[i]:
+			with youtube_dl.YoutubeDL({}) as ydl:
+				result=ydl.extract_info(url[i], download=False)
+			if 'entries' in result:
+				# Can be a playlist or a list of videos
+				video = result['entries']
+				#loops entries to grab each video_url
+				for j, item in enumerate(video):
+					video = result['entries'][j]["webpage_url"]
+					url[i]=video		
 	return url
+
 def get_yt_url(v_id):
 	return "https://www.youtube.com/watch?v="+v_id
 
@@ -120,7 +129,7 @@ class MyClient(discord.Client):
 
 			msg =message.content
 			urls =get_url(msg.split()[1:])
-			
+			print(urls)
 			for url in urls:
 				print(url)
 				path =url[url.index("v=")+2:]  + ".mp3"
