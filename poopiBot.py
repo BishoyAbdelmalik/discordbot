@@ -50,6 +50,9 @@ def endSong(guild,path):
 
 		if len(servers[guild]["music_queue"]) !=0:
 			playMusic(guild)
+		else:
+			servers[guild]["voice_client"].disconnect()
+			servers[guild]={}
 def download_song(v_id):
 	with youtube_dl.YoutubeDL(ydl_opts) as ydl:
 		ydl.extract_info(get_yt_url(v_id), download=True)
