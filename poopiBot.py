@@ -39,7 +39,7 @@ print(os.system("node /bot/memeAPI/server.js &"))
 emojiThumbsUp = '\N{THUMBS UP SIGN}'
 servers={}
 # client = discord.Client()
-def endSong(guild,path):
+async def endSong(guild,path):
 	if not servers[guild]["voice_client"].is_connected():
 		servers[guild]={}
 	else:
@@ -51,7 +51,7 @@ def endSong(guild,path):
 		if len(servers[guild]["music_queue"]) !=0:
 			playMusic(guild)
 		else:
-			servers[guild]["voice_client"].disconnect()
+			await servers[guild]["voice_client"].disconnect()
 			servers[guild]={}
 def download_song(v_id):
 	with youtube_dl.YoutubeDL(ydl_opts) as ydl:
