@@ -253,11 +253,11 @@ class MyClient(discord.Client):
 				await message.channel.send('Pinned ```'+message.content.replace('!pin', '').strip()+'```')
 				await message.delete()
 			return
-		if '!!p' in message.content.lower():
-			await self.music_play(message)
-			return
 		if '!!pt' in message.content.lower():
 			await self.music_play_top(message)
+			return
+		if '!!p' in message.content.lower():
+			await self.music_play(message)
 			return
 		if '!!skip' in message.content.lower() or '!!s' in message.content.lower():
 			await self.music_skip(message)
