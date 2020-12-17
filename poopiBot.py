@@ -39,7 +39,7 @@ print(os.system("node /bot/memeAPI/server.js &"))
 emojiThumbsUp = '\N{THUMBS UP SIGN}'
 servers={}
 # client = discord.Client()
-async def endSong(guild,path):
+def endSong(guild,path):
 	if not servers[guild]["voice_client"].is_connected():
 		servers[guild]={}
 	else:
