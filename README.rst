@@ -1,11 +1,5 @@
 Personal Discord Bot
 ==========
-.. image:: https://img.shields.io/pypi/v/discord.py.svg
-   :target: https://pypi.python.org/pypi/discord.py
-   :alt: PyPI version info
-.. image:: https://img.shields.io/pypi/pyversions/discord.py.svg
-   :target: https://pypi.python.org/pypi/discord.py
-   :alt: PyPI supported Python versions
 
 Discord Bot that helps in some personal discord servers that my friends and I talk on. 
 
