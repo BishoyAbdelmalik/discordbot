@@ -39,7 +39,7 @@ print(os.system("node /bot/memeAPI/server.js &"))
 emojiThumbsUp = '\N{THUMBS UP SIGN}'
 servers={}
 # client = discord.Client()
-def endSong(guild,path):
+def endSong(guild:str,path:str):
 	if not servers[guild]["voice_client"].is_connected():
 		servers[guild]={}
 	else:
@@ -51,10 +51,10 @@ def endSong(guild,path):
 		if len(servers[guild]["music_queue"]) !=0:
 			playMusic(guild)
 		
-def download_song(v_id):
+def download_song(v_id:str):
 	with youtube_dl.YoutubeDL(ydl_opts) as ydl:
 		ydl.extract_info(get_yt_url(v_id), download=True)
-def playMusic(guild):
+def playMusic(guild:str):
 	if servers[guild]["voice_client"].is_playing():
 		return
 	if len(servers[guild]["music_queue"]) !=0:
@@ -66,7 +66,7 @@ def playMusic(guild):
 		if len(servers[guild]["music_queue"]) !=0:
 			download_song(servers[guild]["music_queue"][0][:-4])
   
-def get_url(url):
+def get_url(url:str):
 	if not validators.url(url):
 		youtube_search = YoutubeSearch(url, max_results=1).to_json()   
 		youtube_search= json.loads(youtube_search)
@@ -85,7 +85,7 @@ def get_url(url):
 		# 		url=video		
 	return url
 
-def get_yt_url(v_id):
+def get_yt_url(v_id:str):
 	return "https://www.youtube.com/watch?v="+v_id
 
 class MyClient(discord.Client):
@@ -189,7 +189,7 @@ class MyClient(discord.Client):
 		for server in client.guilds:
 			print(server)
 	
-	async def on_message(self,message):
+	async def on_message(self,message):	
 		if message.author == self.user:
 			return
 		user=""
