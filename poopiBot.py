@@ -142,19 +142,19 @@ class MyClient(discord.Client):
 					for link in links:
 						if validators.url(link):
 							msg+=" "+ link		
-			possible_urls=get_url(msg.split()[1:])
+			possible_urls=msg.split()[1:]
 			a_url=""
 			urls=[]
 			for url in possible_urls:
 				if validators.url(url):
 					if len(a_url.strip())>0:
-						urls.append(a_url.strip())
+						urls.append(get_url(a_url.strip()))
 						a_url=""
-					urls.append(url)
+					urls.append(get_url(url))
 				else:
 					a_url+=" "+url
 			if len(a_url.strip())>0:
-				urls.append(a_url.strip())
+				urls.append(get_url(a_url.strip()))
 				a_url=""
 			
 			print(urls)
