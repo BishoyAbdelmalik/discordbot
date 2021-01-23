@@ -112,7 +112,6 @@ class MyClient(discord.Client):
 			await message.channel.send("join vc first")
 					
 		else:
-			await message.delete()
 			global servers
 			guild = message.guild
 
@@ -132,6 +131,16 @@ class MyClient(discord.Client):
 					return
 
 			msg =message.content
+			for attachment in message.attachments:
+				m3u_url=attachment.url
+				print(m3u_url)
+				if m3u_url.endswith(".m3u") or m3u_url.endswith(".txt"):
+					response = requests.get(m3u_url)
+					links=response.text.split()
+					print(links)
+					for link in links:
+						if validators.url(link):
+							msg+=" "+ link		
 			urls =get_url(msg.split()[1:])
 			print(urls)
 			for url in urls:
@@ -149,6 +158,7 @@ class MyClient(discord.Client):
 			if len(urls)>1:
 				await message.channel.send(str(len(urls))+" songs added to the queue")           
 			playMusic(guild)
+			await message.delete()
 		return
 	async def music_play_top(self,message):
 		if not message.author.voice:
