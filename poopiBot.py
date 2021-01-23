@@ -179,9 +179,9 @@ class MyClient(discord.Client):
 			await message.delete()
 		return
 	async def music_play(self,message):
-		self.music_player(message,0)
+		await self.music_player(message,0)
 	async def music_play_top(self,message):
-		self.music_player(message,1)
+		await self.music_player(message,1)
 		# if not message.author.voice:
 		# 	await message.channel.send("join vc first")
 					
