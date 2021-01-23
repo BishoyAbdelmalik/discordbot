@@ -108,7 +108,7 @@ class MyClient(discord.Client):
 			await message.channel.send(get_yt_url(servers[guild]["current_playing"]))
 		return
 	
-	async def music_play(self,message,location):
+	async def music_player(self,message,location):
 		if not message.author.voice:
 			await message.channel.send("join vc first")
 					
@@ -179,9 +179,9 @@ class MyClient(discord.Client):
 			await message.delete()
 		return
 	async def music_play(self,message):
-		self.music_play(message,0)
+		self.music_player(message,0)
 	async def music_play_top(self,message):
-		self.music_play(message,1)
+		self.music_player(message,1)
 		# if not message.author.voice:
 		# 	await message.channel.send("join vc first")
 					
