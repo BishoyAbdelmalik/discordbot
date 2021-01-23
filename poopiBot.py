@@ -67,22 +67,22 @@ def playMusic(guild):
 			download_song(servers[guild]["music_queue"][0][:-4])
   
 def get_url(url):
-	for i in range(len(url)):
-		if not validators.url(url[i]):
-			youtube_search = YoutubeSearch(url[i], max_results=1).to_json()   
-			youtube_search= json.loads(youtube_search)
-			v_id=youtube_search["videos"][0]["id"]
-			url[i]=get_yt_url(v_id)
-		elif "list" in url[i] or "playlist" in url[i]:
-			with youtube_dl.YoutubeDL({}) as ydl:
-				result=ydl.extract_info(url[i], download=False)
-			if 'entries' in result:
-				# Can be a playlist or a list of videos
-				video = result['entries']
-				#loops entries to grab each video_url
-				for j, item in enumerate(video):
-					video = result['entries'][j]["webpage_url"]
-					url[i]=video		
+	if not validators.url(url):
+		youtube_search = YoutubeSearch(url, max_results=1).to_json()   
+		youtube_search= json.loads(youtube_search)
+		v_id=youtube_search["videos"][0]["id"]
+		url=get_yt_url(v_id)
+	elif "list" in url or "playlist" in url:
+		pass
+		# with youtube_dl.YoutubeDL({}) as ydl:
+		# 	result=ydl.extract_info(url, download=False)
+		# if 'entries' in result:
+		# 	# Can be a playlist or a list of videos
+		# 	video = result['entries']
+		# 	#loops entries to grab each video_url
+		# 	for j, item in enumerate(video):
+		# 		video = result['entries'][j]["webpage_url"]
+		# 		url=video		
 	return url
 
 def get_yt_url(v_id):
