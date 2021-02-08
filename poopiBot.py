@@ -188,7 +188,10 @@ class MyClient(discord.Client):
 		print('Servers connected to:')
 		for server in client.guilds:
 			print(server)
-	
+	async def add_student_role(self,member):
+		role =  discord.utils.get(member.guild.roles, id=805898946434170900)
+		print(role)
+		await member.add_roles(role)
 	async def on_message(self,message):	
 		if message.author == self.user:
 			return
@@ -196,6 +199,8 @@ class MyClient(discord.Client):
 		isAdmin=message.channel.permissions_for(message.author).administrator
 		
 		print(message.content)
+  		if str(message.guild) == "CS/CIT Tutoring":
+			  return
 		if '!setPin' in message.content:
 			if isAdmin:
 				try:
@@ -415,6 +420,9 @@ class MyClient(discord.Client):
 		if '!ping' in message.content.lower():
 			await message.channel.send(client.latency)
 	async def on_member_join(self,member):
+		if str(member.guild) == "CS/CIT Tutoring":
+			await self.add_student_role(member)
+			return
 		await member.create_dm()
 		await member.dm_channel.send(
 			f'Hi {member.name}, poopi welcomes you!'
