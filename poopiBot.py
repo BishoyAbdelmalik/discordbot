@@ -192,6 +192,15 @@ class MyClient(discord.Client):
 		role =  discord.utils.get(member.guild.roles, id=805898946434170900)
 		print(role)
 		await member.add_roles(role)
+	async def on_member_join(self,member):
+		print("hello "+member)
+		if str(member.guild) == "CS/CIT Tutoring":
+			await self.add_student_role(member)
+			
+		await member.create_dm()
+		await member.dm_channel.send(
+			f'Hi {member.name}, poopi welcomes you!'
+		)
 	async def on_message(self,message):	
 		if message.author == self.user:
 			return
@@ -200,6 +209,7 @@ class MyClient(discord.Client):
 		
 		print(message.content)
 		if str(message.guild) == "CS/CIT Tutoring":
+			await self.add_student_role(message.author)
 			return
 		if '!setPin' in message.content:
 			if isAdmin:
@@ -419,18 +429,8 @@ class MyClient(discord.Client):
 			return
 		if '!ping' in message.content.lower():
 			await message.channel.send(client.latency)
-	async def on_member_join(self,member):
-		if str(member.guild) == "CS/CIT Tutoring":
-			await self.add_student_role(member)
-			return
-		await member.create_dm()
-		await member.dm_channel.send(
-			f'Hi {member.name}, poopi welcomes you!'
-		)
-	
-
+   
 client = MyClient()
-
 
 
 client.run(TOKEN)
