@@ -199,8 +199,8 @@ class MyClient(discord.Client):
 		isAdmin=message.channel.permissions_for(message.author).administrator
 		
 		print(message.content)
-  		if str(message.guild) == "CS/CIT Tutoring":
-			  return
+		if str(message.guild) == "CS/CIT Tutoring":
+			return
 		if '!setPin' in message.content:
 			if isAdmin:
 				try:
