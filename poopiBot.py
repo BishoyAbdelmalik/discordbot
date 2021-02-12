@@ -192,6 +192,26 @@ class MyClient(discord.Client):
 		role =  discord.utils.get(member.guild.roles, id=805898946434170900)
 		print(role)
 		await member.add_roles(role)
+	async def add_110_role(self,member):
+		role =  discord.utils.get(member.guild.roles, id=809577623126409240)
+		print(role)
+		await member.add_roles(role)
+	async def add_182_role(self,member):
+		role =  discord.utils.get(member.guild.roles, id=809577657398198322)
+		print(role)
+		await member.add_roles(role)
+	async def add_122_role(self,member):
+		role =  discord.utils.get(member.guild.roles, id=809577695586549793)
+		print(role)
+		await member.add_roles(role)
+	async def add_282_role(self,member):
+		role =  discord.utils.get(member.guild.roles, id=809577733020581898)
+		print(role)
+		await member.add_roles(role)
+	async def add_160_role(self,member):
+		role =  discord.utils.get(member.guild.roles, id=809577851292090368)
+		print(role)
+		await member.add_roles(role)
 	async def on_member_join(self,member):
 		print("hello "+member)
 		if str(member.guild) == "CS/CIT Tutoring":
@@ -210,6 +230,19 @@ class MyClient(discord.Client):
 		print(message.content)
 		if str(message.guild) == "CS/CIT Tutoring":
 			await self.add_student_role(message.author)
+			if message.content.lower().startswith("-join"):
+				join=int(message.content[5:])
+				if join==110:
+					await self.add_110_role(message.author)
+				elif join==182:
+					await self.add_182_role(message.author)
+				elif join==282:
+					await self.add_282_role(message.author)
+				elif join==160:
+					await self.add_160_role(message.author)
+				elif join==122:
+					await self.add_122_role(message.author)
+				pass
 			return
 		if '!setPin' in message.content:
 			if isAdmin:
