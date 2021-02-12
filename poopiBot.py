@@ -234,14 +234,20 @@ class MyClient(discord.Client):
 				join=int(message.content[5:])
 				if join==110:
 					await self.add_110_role(message.author)
+					await message.add_reaction(emojiThumbsUp)
 				elif join==182:
 					await self.add_182_role(message.author)
+					await message.add_reaction(emojiThumbsUp)
 				elif join==282:
 					await self.add_282_role(message.author)
+					await message.add_reaction(emojiThumbsUp)
 				elif join==160:
 					await self.add_160_role(message.author)
+					await message.add_reaction(emojiThumbsUp)
+
 				elif join==122:
 					await self.add_122_role(message.author)
+					await message.add_reaction(emojiThumbsUp)
 				pass
 			return
 		if '!setPin' in message.content:
