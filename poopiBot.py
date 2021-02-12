@@ -192,6 +192,11 @@ class MyClient(discord.Client):
 		role =  discord.utils.get(member.guild.roles, id=805898946434170900)
 		print(role)
 		await member.add_roles(role)
+  
+	async def add_108_role(self,member):
+		role =  discord.utils.get(member.guild.roles, id=809577813354872883)
+		print(role)
+		await member.add_roles(role)
 	async def add_110_role(self,member):
 		role =  discord.utils.get(member.guild.roles, id=809577623126409240)
 		print(role)
@@ -234,6 +239,9 @@ class MyClient(discord.Client):
 				join=int(message.content[5:])
 				if join==110:
 					await self.add_110_role(message.author)
+					await message.add_reaction(emojiThumbsUp)
+				elif join==108:
+					await self.add_108_role(message.author)
 					await message.add_reaction(emojiThumbsUp)
 				elif join==182:
 					await self.add_182_role(message.author)
