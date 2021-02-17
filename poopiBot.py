@@ -235,9 +235,10 @@ class MyClient(discord.Client):
 		print(message.content)
 		if str(message.guild) == "CS/CIT Tutoring":
 			await self.add_student_role(message.author)
-			if "tutor" in message.content.lower() and "today" in message.content.lower() and "?" in message.content.lower():
-				await message.channel.send("https://media.discordapp.net/attachments/805908246224568360/805955063763566672/unknown.png")
-			if message.content.lower().startswith("-join"):
+			themsg=message.content.lower()
+			if "tutor" in themsg and ("today" in themsg or "right now" in themsg or "now" in themsg or "online" in themsg) and "?" in themsg:
+				await message.channel.send("https://cdn.discordapp.com/attachments/805908246224568360/811406507857149952/unknown.png")
+			if themsg.startswith("-join"):
 				join=int(message.content[5:])
 				if join==110:
 					await self.add_110_role(message.author)
