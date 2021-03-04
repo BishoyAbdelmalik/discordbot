@@ -1,4 +1,4 @@
-aiohttp>=3.6.0,<3.7.0
+aiohttp
 websockets>=6.0,!=7.0,!=8.0,!=8.0.1,<9.0
 youtube_dl
 FFmpeg
