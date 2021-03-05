@@ -231,7 +231,7 @@ class MyClient(discord.Client):
 			return
 		user=""
 		isAdmin=message.channel.permissions_for(message.author).administrator
-		
+		print(message.guild)
 		print(message.content)
 		if str(message.guild) == "CS/CIT Tutoring":
 			await self.add_student_role(message.author)
