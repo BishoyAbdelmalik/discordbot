@@ -234,7 +234,7 @@ class MyClient(discord.Client):
 		print(message.guild)
 		print(message.content)
 		msgs=["aha","sure","why not","why","mmm why","tell me more","yeah","I see","I guess","IDK","lamo","lol","ok boomer","good point","no","yes","Awwww"]
-		if message.guild == None and random.choice([True, False]):
+		if message.guild == None:
 			await message.channel.send(random.choice(msgs))
 		if str(message.guild) == "CS/CIT Tutoring":
 			await self.add_student_role(message.author)
