@@ -233,6 +233,9 @@ class MyClient(discord.Client):
 		isAdmin=message.channel.permissions_for(message.author).administrator
 		print(message.guild)
 		print(message.content)
+		msgs=["aha","sure","why not","why","mmm why","tell me more","yeah","I see","I guess","IDK","lamo","lol","ok boomer","good point","no","yes","Awwww"]
+		if message.guild == None and random.choice([True, False]):
+			await message.channel.send(random.choice(msgs))
 		if str(message.guild) == "CS/CIT Tutoring":
 			await self.add_student_role(message.author)
 			themsg=message.content.lower()
