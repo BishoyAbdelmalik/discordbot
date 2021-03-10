@@ -1,4 +1,9 @@
-aiohttp
-websockets>=6.0,!=7.0,!=8.0,!=8.0.1,<9.0
+discord.py[voice]
+substring
+requests
+FFmpeg  
 youtube_dl
-FFmpeg
+ffprobe 
+validators 
+youtube-search 
+aiohttp
