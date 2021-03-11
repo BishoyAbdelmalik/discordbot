@@ -4,20 +4,20 @@ pipeline {
         
         stage('build') {
             steps {
-                withPythonEnv('python') {
+                // withPythonEnv('python') {
                     sh 'python --version'
                     pwd()
-                }
+                
             }
         }
         stage('Deploy'){
             steps{
                 pwd()
-                withPythonEnv('python') {
+                
                     sh 'pwd'
-                    sh '$jenkins_home/workspace/poopi/poopiBot-Max.py'
+                    // sh '$jenkins_home/workspace/poopi/poopiBot-Max.py'
                 }
-            }
+            
         }
     }
 }
