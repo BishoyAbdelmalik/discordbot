@@ -6,13 +6,16 @@ pipeline {
             steps {
                 withPythonEnv('python') {
                     sh 'python --version'
+                    pwd()
                 }
             }
         }
         stage('Deploy'){
             steps{
+                pwd()
                 withPythonEnv('python') {
-                    sh '/var/jenkins_home/workspace/poopie_discordbot_max-dev/poopiBot-Max.py'
+                    sh 'pwd'
+                    sh '$jenkins_home/workspace/poopi/poopiBot-Max.py'
                 }
             }
         }
