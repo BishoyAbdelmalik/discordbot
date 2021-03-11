@@ -1,14 +1,17 @@
 pipeline {
-    agent { docker { image 'python:3.5.1' } }
     stages {
         stage('build') {
             steps {
-                sh 'python --version'
+                withPythonEnv('python3') {
+                    sh 'python --version'
+                }
             }
         }
         stage('Deploy'){
             steps{
-                sh 'python poopiBot-Max.py'
+                withPythonEnv('python3') {
+                    sh 'python poopiBot-Max.py'
+                }
             }
         }
     }
