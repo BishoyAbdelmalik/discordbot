@@ -7,7 +7,7 @@ pipeline {
             }
         }
         stage('Deploy'){
-            sh 'python poopiBot.py'
+            sh 'python poopiBot-.py'
         }
     }
 }

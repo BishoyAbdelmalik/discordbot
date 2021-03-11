@@ -201,51 +201,6 @@ class MyClient(discord.Client):
         for server in client.guilds:
             print(server)
 
-    async def add_student_role(self, member):
-        role = discord.utils.get(member.guild.roles, id=805898946434170900)
-        print(role)
-        await member.add_roles(role)
-
-    async def add_108_role(self, member):
-        role = discord.utils.get(member.guild.roles, id=809577813354872883)
-        print(role)
-        await member.add_roles(role)
-
-    async def add_110_role(self, member):
-        role = discord.utils.get(member.guild.roles, id=809577623126409240)
-        print(role)
-        await member.add_roles(role)
-
-    async def add_182_role(self, member):
-        role = discord.utils.get(member.guild.roles, id=809577657398198322)
-        print(role)
-        await member.add_roles(role)
-
-    async def add_122_role(self, member):
-        role = discord.utils.get(member.guild.roles, id=809577695586549793)
-        print(role)
-        await member.add_roles(role)
-
-    async def add_282_role(self, member):
-        role = discord.utils.get(member.guild.roles, id=809577733020581898)
-        print(role)
-        await member.add_roles(role)
-
-    async def add_160_role(self, member):
-        role = discord.utils.get(member.guild.roles, id=809577851292090368)
-        print(role)
-        await member.add_roles(role)
-
-    async def on_member_join(self, member):
-        print("hello "+member)
-        if str(member.guild) == "CS/CIT Tutoring":
-            await self.add_student_role(member)
-
-        await member.create_dm()
-        await member.dm_channel.send(
-            f'Hi {member.name}, poopi welcomes you!'
-        )
-
     async def on_message(self, message):
         if message.author == self.user:
             return
@@ -256,84 +211,85 @@ class MyClient(discord.Client):
         msgs = ["aha", "sure", "why not", "why", "mmm why", "tell me more", "yeah", "I see",
                 "I guess", "IDK", "lamo", "lol", "ok boomer", "good point", "no", "yes", "Awwww"]
         if message.guild == None:
-            await message.channel.send(random.choice(msgs))
-        if message.guild.id != 690308124808183859:
-            if str(message.guild) == "CS/CIT Tutoring":
-                await self.add_student_role(message.author)
-                themsg = message.content.lower()
-                if "tutor" in themsg and ("today" in themsg or "right now" in themsg or "now" in themsg or "online" in themsg) and "?" in themsg:
-                    await message.channel.send("https://cdn.discordapp.com/attachments/805908246224568360/816920004078731274/unknown.png")
-                if themsg.startswith("-join"):
-                    join = int(message.content[5:])
-                    if join == 110:
-                        await self.add_110_role(message.author)
-                        await message.add_reaction(emojiThumbsUp)
-                    elif join == 108:
-                        await self.add_108_role(message.author)
-                        await message.add_reaction(emojiThumbsUp)
-                    elif join == 182:
-                        await self.add_182_role(message.author)
-                        await message.add_reaction(emojiThumbsUp)
-                    elif join == 282:
-                        await self.add_282_role(message.author)
-                        await message.add_reaction(emojiThumbsUp)
-                    elif join == 160:
-                        await self.add_160_role(message.author)
-                        await message.add_reaction(emojiThumbsUp)
+            # await message.channel.send(random.choice(msgs))
+            print("No Guild")
+        # if str(message.guild) == "CS/CIT Tutoring":
+        # 	await self.add_student_role(message.author)
+        # 	themsg=message.content.lower()
+        # 	if "tutor" in themsg and ("today" in themsg or "right now" in themsg or "now" in themsg or "online" in themsg) and "?" in themsg:
+        # 		await message.channel.send("https://cdn.discordapp.com/attachments/805908246224568360/816920004078731274/unknown.png")
+        # 	if themsg.startswith("-join"):
+        # 		join=int(message.content[5:])
+        # 		if join==110:
+        # 			await self.add_110_role(message.author)
+        # 			await message.add_reaction(emojiThumbsUp)
+        # 		elif join==108:
+        # 			await self.add_108_role(message.author)
+        # 			await message.add_reaction(emojiThumbsUp)
+        # 		elif join==182:
+        # 			await self.add_182_role(message.author)
+        # 			await message.add_reaction(emojiThumbsUp)
+        # 		elif join==282:
+        # 			await self.add_282_role(message.author)
+        # 			await message.add_reaction(emojiThumbsUp)
+        # 		elif join==160:
+        # 			await self.add_160_role(message.author)
+        # 			await message.add_reaction(emojiThumbsUp)
 
-                    elif join == 122:
-                        await self.add_122_role(message.author)
-                        await message.add_reaction(emojiThumbsUp)
-                    pass
-                return
-            if '!setPin' in message.content:
-                if isAdmin:
-                    try:
-                        f = open(str(message.guild.id)+"_Pins", "x")
-                        f.write(str(message.channel.id))
-                        f.close()
-                        await message.add_reaction(emojiThumbsUp)
-                    except:
-                        await message.channel.send("unset pin channel first")
-                else:
-                    await message.channel.send("Only admins can set pins channel")
+        # 		elif join==122:
+        # 			await self.add_122_role(message.author)
+        # 			await message.add_reaction(emojiThumbsUp)
+        # 		pass
+        # 	return
+        # if '!setPin' in message.content:
+        # 	if isAdmin:
+        # 		try:
+        # 			f = open(str(message.guild.id)+"_Pins","x")
+        # 			f.write(str(message.channel.id))
+        # 			f.close()
+        # 			await message.add_reaction(emojiThumbsUp)
+        # 		except:
+        # 			await message.channel.send("unset pin channel first")
+        # 	else:
+        # 		await message.channel.send("Only admins can set pins channel")
 
-                return
-            if '!unsetPin' in message.content:
-                if isAdmin:
-                    try:
-                        os.remove(str(message.guild.id)+"_Pins")
-                    except:
-                        print()
-                else:
-                    await message.channel.send("Only admins can unset pins channel")
-                return
-            try:
-                if message.channel.id == int(open(str(message.guild.id)+"_Pins").read()):
-                    await message.delete()
-                    user = message.author
-                    await user.create_dm()
-                    await user.dm_channel.send("Hey, don't send messages in pins channel 😡 😡 😡")
-                    return
-            except:
-                print("no pins channel")
-            pick = random.randint(1, 100)
-            if pick == 5:
-                await message.channel.send('mmmm'+" <@" + str(message.author.id)+">")
-            if '!pin' in message.content.lower():
-                # print(open(str(message.guild)+"_Pins").read())
-                try:
-                    channelID = int(open(str(message.guild.id)+"_Pins").read())
-                except:
-                    channelID = -1
-                if channelID == -1:
-                    await message.channel.send("set pin channel first")
-                else:
-                    pinChannel = client.get_channel(channelID)
-                    await pinChannel.send(message.content.replace('!pin', '').strip()+"\n\nPinned by"+" <@" + str(message.author.id)+">")
-                    await message.channel.send('Pinned ```'+message.content.replace('!pin', '').strip()+'```')
-                    await message.delete()
-                return
+        # 	return
+        # if '!unsetPin' in message.content:
+        # 	if isAdmin:
+        # 		try:
+        # 			os.remove(str(message.guild.id)+"_Pins")
+        # 		except:
+        # 			print()
+        # 	else:
+        # 		await message.channel.send("Only admins can unset pins channel")
+        # 	return
+        # try:
+        # 	if message.channel.id == int(open(str(message.guild.id)+"_Pins").read()):
+        # 		await message.delete()
+        # 		user = message.author
+        # 		await user.create_dm()
+        # 		await user.dm_channel.send("Hey, don't send messages in pins channel 😡 😡 😡")
+        # 		return
+        # except:
+        # 	print("no pins channel")
+        # pick=random.randint(1,100)
+        # if pick==5:
+        # 	await message.channel.send('mmmm'+" <@"+ str(message.author.id)+">")
+        # if '!pin' in message.content.lower():
+        # 	#print(open(str(message.guild)+"_Pins").read())
+        # 	try:
+        # 		channelID=int(open(str(message.guild.id)+"_Pins").read())
+        # 	except:
+        # 		channelID=-1
+        # 	if channelID==-1:
+        # 		await message.channel.send("set pin channel first")
+        # 	else:
+        # 		pinChannel=client.get_channel(channelID)
+        # 		await pinChannel.send(message.content.replace('!pin', '').strip()+"\n\nPinned by"+" <@"+ str(message.author.id)+">")
+        # 		await message.channel.send('Pinned ```'+message.content.replace('!pin', '').strip()+'```')
+        # 		await message.delete()
+        # 	return
+        elif message.guild.id == 690308124808183859:
             if '!!pt' in message.content.lower():
                 await self.music_play_top(message)
                 return
@@ -361,27 +317,7 @@ class MyClient(discord.Client):
                                  stdin=None, stdout=None, stderr=None, close_fds=True)
 
                 return
-            if '@' in message.content:
-                user = substring.substringByChar(
-                    message.content, startChar="<", endChar=">")
-            if 'gWhy' in message.content:
-                await message.channel.send('CANBAS'+" " + user)
-                return
-            if 'CANBAS'.lower() in message.content.lower():
-                await message.channel.send('gWhy'+" " + user)
-                return
-            if 'why not' in message.content.lower():
-                if bool(random.getrandbits(1)):
-                    await message.channel.send('Gwacause not'+" <@" + str(message.author.id)+">")
-                return
-            if 'why' in message.content.lower():
-                if bool(random.getrandbits(1)):
-                    await message.channel.send('Gwacause'+" <@" + str(message.author.id)+">")
-                return
-            if 'user' in message.content.lower():
-                if bool(random.getrandbits(1)):
-                    await message.channel.send('Jyuicerr'+" <@" + str(message.author.id)+">")
-                return
+
             if '!pathetic' in message.content.lower():
                 pathetic_arr = ["https://media.discordapp.net/attachments/699127599817031700/724169633262862356/pathetic-56074431.png",
                                 "https://media.discordapp.net/attachments/699127599817031700/724168345154224140/unknown.png",
@@ -493,18 +429,7 @@ class MyClient(discord.Client):
                 else:
                     await message.channel.send(data["meme"])
                 return
-            if 'success' in message.content.lower():
-                if '@' in message.content:
-                    await message.channel.send('Perfect'+" " + user)
-                else:
-                    await message.channel.send('Perfect'+" <@" + str(message.author.id)+">")
-                return
-            if 'perfect' in message.content.lower():
-                if '@' in message.content:
-                    await message.channel.send('Beautiful'+" " + user)
-                else:
-                    await message.channel.send('Beautiful'+" <@" + str(message.author.id)+">")
-                return
+
             if '!ping' in message.content.lower():
                 await message.channel.send(client.latency)
 
