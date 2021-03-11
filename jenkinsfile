@@ -12,7 +12,7 @@ pipeline {
         stage('Deploy'){
             steps{
                 withPythonEnv('python') {
-                    sh 'poopiBot-Max.py'
+                    sh '/var/jenkins_home/workspace/poopie_discordbot_max-dev/poopiBot-Max.py'
                 }
             }
         }
