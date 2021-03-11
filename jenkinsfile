@@ -5,14 +5,14 @@ pipeline {
         stage('build') {
             steps {
                 withPythonEnv('python3') {
-                    sh 'python --version'
+                    'python --version'
                 }
             }
         }
         stage('Deploy'){
             steps{
                 withPythonEnv('python3') {
-                    sh 'python poopiBot-Max.py'
+                    'python poopiBot-Max.py'
                 }
             }
         }
