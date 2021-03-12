@@ -507,14 +507,19 @@ class MyClient(discord.Client):
                 return
             if '!ping' in message.content.lower():
                 await message.channel.send(client.latency)
-
+        elif message.guild.id == 690308124808183859:  # republic city
+            if '!bugs' in message.content.lower():
+                await message.channel.send("https://media.discordapp.net/attachments/538955632951296010/771989679713157140/db1.png")
+                return
         # for all servers poopie is in
         if message.content.lower().startswith('@vc') and not message.mentions:
             voice = message.author.voice
             if voice and message.content.lower().startswith('@vcs'):
                 await message.channel.send(', '.join(f"<@!{u}>" for u in voice.channel.voice_states.keys()))
+                return
             elif voice and message.content.lower().startswith('@vc'):
                 await message.channel.send(', '.join(f"<@!{u}>" for u in voice.channel.voice_states.keys()), delete_after=5)
+                return
 
 
 client = MyClient()
