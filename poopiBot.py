@@ -262,7 +262,7 @@ class MyClient(discord.Client):
                 await self.add_student_role(message.author)
                 themsg = message.content.lower()
                 if "tutor" in themsg and ("today" in themsg or "right now" in themsg or "now" in themsg or "online" in themsg) and "?" in themsg:
-                    await message.channel.send("https://cdn.discordapp.com/attachments/805908246224568360/816920004078731274/unknown.png")
+                    await message.channel.send("https://cdn.discordapp.com/attachments/805908246224568360/828794865109434368/unknown.png")
                 if themsg.startswith("-join"):
                     join = int(message.content[5:])
                     if join == 110:
