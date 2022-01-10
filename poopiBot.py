@@ -16,8 +16,8 @@ import youtube_dl
 import validators
 from collections import deque
 from util import get_yt_url, get_url
-from constants import emojiThumbsUp,meme,meme2,meme3,meme4,meme6,ydl_opts
-
+from constants import emojiThumbsUp,meme,meme2,meme3,meme4,meme5,meme6
+from tutoring import tutoring_server
 os.chdir(os.path.realpath(__file__)[:-len(os.path.basename(__file__))])
 
 TOKEN = open("token.txt").read()
@@ -334,7 +334,7 @@ class MyClient(discord.Client):
                     await message.channel.send(file=discord.File(filename))
                     os.remove(filename)
                 else:
-                    await message.channel.send(patheticIMGS[pick])
+                    await message.channel.send(pathetic_arr[pick])
                 return
             if '!meme' in message.content.lower():
                 pick = random.randint(1, 7)
