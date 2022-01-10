@@ -13,30 +13,16 @@ import aiohttp
 from io import BytesIO
 from requests.sessions import session
 import youtube_dl
-from youtube_search import YoutubeSearch
 import validators
-import json
 from collections import deque
+from util import get_yt_url, get_url
+from constants import emojiThumbsUp,meme,meme2,meme3,meme4,meme6,ydl_opts
 
-ydl_opts = {
-    'format': 'bestaudio/best',
-    'outtmpl': '%(id)s.mp3',
-    'postprocessors': [{
-        'key': 'FFmpegExtractAudio',
-        'preferredcodec': 'mp3',
-        'preferredquality': '192',
-    }],
-}
+os.chdir(os.path.realpath(__file__)[:-len(os.path.basename(__file__))])
+
 TOKEN = open("token.txt").read()
-# api-endpoint
-meme = "http://localhost:956/moderate"
-meme2 = "http://localhost:956/sbubby"
-meme3 = "http://localhost:956/dank"
-meme4 = "http://localhost:956/light"
-meme5 = "http://localhost:956/programing"
-meme6 = "http://localhost:956/meme"
+
 print(os.system("node /bot/memeAPI/server.js &"))
-emojiThumbsUp = '\N{THUMBS UP SIGN}'
 servers = {}
 # client = discord.Client()
 
@@ -55,8 +41,9 @@ def endSong(guild: str, path: str):
 
 
 def download_song(v_id: str):
-    with youtube_dl.YoutubeDL(ydl_opts) as ydl:
-        ydl.extract_info(get_yt_url(v_id), download=True)
+    os.system(f'yt-dlp --extract-audio -o \'%(id)s.mp3\' --audio-format mp3 {get_yt_url(v_id)}')
+    # with youtube_dl.YoutubeDL(ydl_opts) as ydl:
+    #     ydl.download([get_yt_url(v_id)])
 
 
 def playMusic(guild: str):
@@ -72,31 +59,6 @@ def playMusic(guild: str):
             servers[guild]["voice_client"].source, 1)
         if len(servers[guild]["music_queue"]) != 0:
             download_song(servers[guild]["music_queue"][0][:-4])
-
-
-def get_url(url: str):
-    if not validators.url(url):
-        youtube_search = YoutubeSearch(url, max_results=1).to_json()
-        youtube_search = json.loads(youtube_search)
-        v_id = youtube_search["videos"][0]["id"]
-        url = get_yt_url(v_id)
-    elif "list" in url or "playlist" in url:
-        pass
-        # with youtube_dl.YoutubeDL({}) as ydl:
-        # 	result=ydl.extract_info(url, download=False)
-        # if 'entries' in result:
-        # 	# Can be a playlist or a list of videos
-        # 	video = result['entries']
-        # 	#loops entries to grab each video_url
-        # 	for j, item in enumerate(video):
-        # 		video = result['entries'][j]["webpage_url"]
-        # 		url=video
-    return url
-
-
-def get_yt_url(v_id: str):
-    return "https://www.youtube.com/watch?v="+v_id
-
 
 class MyClient(discord.Client):
     async def music_skip(self, message):
@@ -201,41 +163,6 @@ class MyClient(discord.Client):
         for server in client.guilds:
             print(server)
 
-    async def add_student_role(self, member):
-        role = discord.utils.get(member.guild.roles, id=805898946434170900)
-        print(role)
-        await member.add_roles(role)
-
-    async def add_108_role(self, member):
-        role = discord.utils.get(member.guild.roles, id=809577813354872883)
-        print(role)
-        await member.add_roles(role)
-
-    async def add_110_role(self, member):
-        role = discord.utils.get(member.guild.roles, id=809577623126409240)
-        print(role)
-        await member.add_roles(role)
-
-    async def add_182_role(self, member):
-        role = discord.utils.get(member.guild.roles, id=809577657398198322)
-        print(role)
-        await member.add_roles(role)
-
-    async def add_122_role(self, member):
-        role = discord.utils.get(member.guild.roles, id=809577695586549793)
-        print(role)
-        await member.add_roles(role)
-
-    async def add_282_role(self, member):
-        role = discord.utils.get(member.guild.roles, id=809577733020581898)
-        print(role)
-        await member.add_roles(role)
-
-    async def add_160_role(self, member):
-        role = discord.utils.get(member.guild.roles, id=809577851292090368)
-        print(role)
-        await member.add_roles(role)
-
     async def on_member_join(self, member):
         print("hello "+member)
         if str(member.guild) == "CS/CIT Tutoring":
@@ -245,7 +172,7 @@ class MyClient(discord.Client):
         await member.dm_channel.send(
             f'Hi {member.name}, poopi welcomes you!'
         )
-
+    
     async def on_message(self, message):
         if message.author == self.user:
             return
@@ -259,32 +186,7 @@ class MyClient(discord.Client):
             await message.channel.send(random.choice(msgs))
         if message.guild.id != 690308124808183859:
             if str(message.guild) == "CS/CIT Tutoring":
-                await self.add_student_role(message.author)
-                themsg = message.content.lower()
-                if "tutor" in themsg and ("today" in themsg or "right now" in themsg or "now" in themsg or "online" in themsg) and "?" in themsg:
-                    await message.channel.send("https://cdn.discordapp.com/attachments/805908246224568360/828794865109434368/unknown.png")
-                if themsg.startswith("-join"):
-                    join = int(message.content[5:])
-                    if join == 110:
-                        await self.add_110_role(message.author)
-                        await message.add_reaction(emojiThumbsUp)
-                    elif join == 108:
-                        await self.add_108_role(message.author)
-                        await message.add_reaction(emojiThumbsUp)
-                    elif join == 182:
-                        await self.add_182_role(message.author)
-                        await message.add_reaction(emojiThumbsUp)
-                    elif join == 282:
-                        await self.add_282_role(message.author)
-                        await message.add_reaction(emojiThumbsUp)
-                    elif join == 160:
-                        await self.add_160_role(message.author)
-                        await message.add_reaction(emojiThumbsUp)
-
-                    elif join == 122:
-                        await self.add_122_role(message.author)
-                        await message.add_reaction(emojiThumbsUp)
-                    pass
+                await tutoring_server(message)
                 return
             if '!setPin' in message.content:
                 if isAdmin:

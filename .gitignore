@@ -1,2 +1,4 @@
 token.txt
 git.sh
+bot-env/
+__pycache__/
